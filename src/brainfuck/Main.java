@@ -5,11 +5,12 @@ import brainfuck.virtualmachine.OverflowException;
 
 public class Main {
 	public static void main(String[] args) throws OverflowException {
-		//InstructionList ilist = new InstructionList();
-		Machine machine = new Machine();
+		ArgParser parser = new ArgParser(args);
+
+		/*Machine machine = new Machine();
 		machine.executeOp("INCR");
 		System.out.println(machine.dumpMemory());
 		machine.executeOp('-');
-		System.out.println(machine.dumpMemory());
+		System.out.println(machine.dumpMemory());*/
 	}
 }
