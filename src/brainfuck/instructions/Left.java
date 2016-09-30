@@ -17,7 +17,7 @@ public class Left extends Instruction {
 	 * Constructs the Left instruction.
 	 */
 	public Left() {
-		super("LEFT", '<', "yellow"); // FIXMETOO
+		super("LEFT", '<', new int[] {0x94, 0x00, 0xD3});
 	}
 
 

@@ -17,7 +17,7 @@ public class Decr extends Instruction {
 	 * Constructs the Decr instruction.
 	 */
 	public Decr() {
-		super("DECR", '-', "red"); // FIXMETOO
+		super("DECR", '-', new int[] {0x4B, 0x00, 0x82});
 	}
 
 	/**

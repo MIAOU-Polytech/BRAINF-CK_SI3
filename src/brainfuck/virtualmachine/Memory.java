@@ -12,8 +12,8 @@ public class Memory {
 	 */
 	private static final int DEFAULT_SIZE = 30000;
 
-	/*
-	 * Offset allowing to obtain values from 0 to 255
+	/**
+	 * Offset allowing to obtain values from 0 to 255.
 	 */
 	private static final int OFFSET = 128;
 
@@ -89,10 +89,10 @@ public class Memory {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder tmp = new StringBuilder(size+size/16);
+		StringBuilder tmp = new StringBuilder();
 		for (int i = 0; i < size; i++) {
 			if (memory[i] != Byte.MIN_VALUE) {
-				tmp.append("C"+i+": "+(memory[i]+OFFSET)+"\n");
+				tmp.append("C" + i + ": " + (memory[i] + OFFSET) + "\n");
 			}
 		}
 		return tmp.toString();

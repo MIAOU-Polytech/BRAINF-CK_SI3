@@ -17,7 +17,7 @@ public class Right extends Instruction {
 	 * Constructs the Right instruction.
 	 */
 	public Right() {
-		super("RIGHT", '>', "pink"); // FIXMETOO
+		super("RIGHT", '>', new int[] {0x00, 0x00, 0xFF});
 	}
 
 	/**

@@ -17,7 +17,7 @@ public class Incr extends Instruction {
 	 * Constructs the Incr instruction.
 	 */
 	public Incr() {
-		super("INCR", '+', "blue"); // FIXME
+		super("INCR", '+', new int[] {0xFF, 0xFF, 0xFF});
 	}
 
 	/**

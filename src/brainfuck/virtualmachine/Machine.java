@@ -30,7 +30,7 @@ public class Machine {
 	 * Constructs a new virtual machine, initialize its Memory.
 	 */
 	public Machine() {
-		memory = new Memory(32); //FIXME
+		memory = new Memory();
 		iset = new InstructionSet();
 	}
 
