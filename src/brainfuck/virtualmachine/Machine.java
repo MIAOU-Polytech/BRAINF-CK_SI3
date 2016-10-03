@@ -1,6 +1,7 @@
 package brainfuck.virtualmachine;
 
 import brainfuck.InstructionSet;
+import brainfuck.Instruction;
 
 /**
  * Actual virtual machine which processes the instructions and interracts with the memory.
@@ -56,18 +57,26 @@ public class Machine {
 	 * Fetch an instruction by its keyword and execute it.
 	 *
 	 * @param name	Instruction's keyword
+	 * @return false if the instruction is invalid true otherwise.
 	 */
-	public void executeOp(String name) {
-		iset.getOp(name).accept(this);
+	public boolean executeOp(String name) {
+		Instruction instr = iset.getOp(name);
+		if (instr == null) return false;
+		instr.accept(this);
+		return true;
 	}
 
 	/**
 	 * Fetch an instruction by its symbol and execute it.
 	 *
 	 * @param symbol	Instruction's symbol
+	 * @return false if the instruction is invalid, true otherwise.
 	 */
-	public void executeOp(char symbol) {
-		iset.getOp(symbol).accept(this);
+	public boolean executeOp(char symbol) {
+		Instruction instr = iset.getOp(symbol);
+		if (instr == null) return false;
+		instr.accept(this);
+		return true;
 	}
 
 	/**
