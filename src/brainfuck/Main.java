@@ -1,10 +1,12 @@
 package brainfuck;
 
+import java.util.Arrays;
 import brainfuck.virtualmachine.Machine;
-import brainfuck.virtualmachine.OverflowException;
 
 public class Main {
-	public static void main(String[] args) throws OverflowException {
+	public static void main(String[] args) throws SyntaxException {
+		ArgParser parser = new ArgParser(args); 
+
 		Machine machine = new Machine();
 
 		machine.executeOp("INCR");
