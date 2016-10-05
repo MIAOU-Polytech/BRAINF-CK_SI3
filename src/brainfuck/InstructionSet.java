@@ -11,6 +11,8 @@ import brainfuck.instructions.*;
  * @see Instruction
  */
 public class InstructionSet {
+	public static final int MAX_OP_LENGTH = 5;
+
 	/**
 	 * Lists all Instruction objects (instantiated from their respective classes).
 	 */
@@ -33,7 +35,12 @@ public class InstructionSet {
 		names = new HashMap<>();
 		symbols = new HashMap<>();
 		for (Instruction instruction: instructions) {
-			names.put(instruction.getName(), instruction);
+			String name = instruction.getName();
+			if (name.length() > MAX_OP_LENGTH) {
+				System.err.println("Warning: instruction " + name + " longer than the maximum allowed length");
+				System.exit(37);
+			}
+			names.put(name, instruction);
 			symbols.put(instruction.getSymbol(), instruction);
 		}
 	}
