@@ -8,25 +8,38 @@ public class Main {
 		ArgParser argp = new ArgParser(args);
 		switch(argp.getMode()) {
 			case FILEREAD:
-				execute(fileRead(argp.getFilename()));
+				execute(textFileRead(argp.getFilename()));
 				break;
 			case IMAGEREAD:
 				execute(imageRead(argp.getFilename()));
 				break;
 			case REWRITE:
 				Translator tr = new Translator();
-				tr.toShortSyntax(fileRead(argp.getFilename()).get());
+				tr.toShortSyntax(textFileRead(argp.getFilename()).get());
 				break;
 			case TRANSLATE:
-				Translator tr = new Translator();
-				ImageWriter iw = new ImageWriter(tr.toColor(fileRead(argp.getFilename()).get()));
+				Translator tra = new Translator();
+				ImageWriter iw = new ImageWriter(tra.toColor(textFileRead(argp.getFilename()).get()));
 				break;
 			case CHECK:
-				System.out.println("Miaou");
+				Checker checker = new Checker(textFileRead(argp.getFilename()).get());
+				checker.check();
 				break;
 
 		}
 
+	}
+
+	public static InstructionParser textFileRead(String filename) throws IOException {
+		ReadTextFile file = new ReadTextFile(filename);
+
+		return new InstructionParser(file.getData());
+	}
+
+	public static InstructionParser imageRead(String filename) throws IOException {
+		ReadImage file = new ReadImage(filename);
+
+		return new InstructionParser(file.getData());
 	}
 
 	public static void execute(InstructionParser ip) {

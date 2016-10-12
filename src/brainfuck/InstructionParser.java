@@ -42,10 +42,12 @@ public class InstructionParser {
 	public InstructionParser(IntStream stream) {
 		this();
 		stream.forEachOrdered(colour -> {
-			Instruction instr = iset.getOp(colour);
-			if (instr != null) instructions.add(instr);
-			else {
-				onError();
+			if (colour != 0xFF000000) {
+				Instruction instr = iset.getOp(colour);
+				if (instr != null) instructions.add(instr);
+				else {
+					onError();
+				}
 			}
 		});
 	}

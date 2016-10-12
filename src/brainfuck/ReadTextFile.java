@@ -39,7 +39,7 @@ public class ReadTextFile {
 	 * @return Stream of file's lines.
 	 * @throws IOException	if the file could not be open.
 	 */
-	public Stream<String> getLines() throws IOException {
+	public Stream<String> getData() throws IOException {
 		return Files.lines(path);
 	}
 }

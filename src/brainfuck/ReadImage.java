@@ -43,7 +43,7 @@ public class ReadImage {
 	 * Returns the colors of the parsed image, as an <code>IntStream</code> containing integers matching the RGB values of each square.
 	 * @return an <code>IntStream</code> containing the integer value of each color.
 	 */
-	public IntStream getInstructions() {
+	public IntStream getData() {
 		return instructions.stream().mapToInt(Integer::intValue);
 	}
 }

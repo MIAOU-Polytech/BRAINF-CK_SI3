@@ -27,6 +27,9 @@ public class ArgParser {
 				case "-p":
 					if (i+1 < args.length && !(args[i+1].startsWith("-"))) {
 						this.filename = args[i+1];
+						if (this.filename.endsWith(".bmp")) {
+							mode = Mode.IMAGEREAD;
+						}
 						i++;
 					} else {
 						throw new SyntaxException("No file for -p option.");

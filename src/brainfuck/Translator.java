@@ -26,8 +26,8 @@ public class Translator {
 	 */
 	public void toLongSyntax(List<Instruction> instructions) {
 		for (int i = 0; i < instructions.size(); i++) {
-		toLongSyntax(instructions.get(i));
-			}
+			toLongSyntax(instructions.get(i));
+		}
 	}
 
 	/**
