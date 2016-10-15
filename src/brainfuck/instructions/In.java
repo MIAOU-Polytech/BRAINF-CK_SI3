@@ -3,7 +3,6 @@ package brainfuck.instructions;
 import brainfuck.Instruction;
 import brainfuck.virtualmachine.Machine;
 import brainfuck.virtualmachine.Memory;
-import brainfuck.virtualmachine.OverflowException;
 
 /**
  * Read the value present in the input as an ASCII character.

@@ -1,4 +1,4 @@
-package brainfuck.virtualmachine;
+package brainfuck.exceptions;
 
 /**
  * Exception thrown when trying to increment or decrement beyond memory cell value limit.

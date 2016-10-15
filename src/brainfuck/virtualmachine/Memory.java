@@ -1,5 +1,7 @@
 package brainfuck.virtualmachine;
 
+import brainfuck.exceptions.OutOfMemoryException;
+
 /**
  * Memory container which is basically an interface for an array of bytes.
  *

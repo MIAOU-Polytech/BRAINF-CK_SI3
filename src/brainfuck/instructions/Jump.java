@@ -3,7 +3,6 @@ package brainfuck.instructions;
 import brainfuck.Instruction;
 import brainfuck.BracketCounter;
 import brainfuck.virtualmachine.Machine;
-import brainfuck.virtualmachine.OutOfMemoryException;
 
 /**
  * Jump instruction: jump to the instruction right after the associated BACK if the pointed

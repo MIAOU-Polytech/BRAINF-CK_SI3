@@ -2,7 +2,6 @@ package brainfuck.instructions;
 
 import brainfuck.Instruction;
 import brainfuck.virtualmachine.Machine;
-import brainfuck.virtualmachine.OutOfMemoryException;
 
 /**
  * Left instruction: move to the previous memory cell.
@@ -26,10 +25,9 @@ public class Left extends Instruction {
 	 * Overrides <a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html">Consumer</a>'s method.
 	 *
 	 * @param machine	Virtual Machine whose state will be altered
-	 * @throws OutOfMemoryException	if the current cell is the first in Memory.
 	 */
 	@Override
-	public void accept(Machine machine) throws OutOfMemoryException {
+	public void accept(Machine machine) {
 		int location = machine.getLocation();
 		location--;
 		machine.setLocation(location);

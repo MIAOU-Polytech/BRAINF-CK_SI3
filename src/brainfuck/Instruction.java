@@ -3,7 +3,6 @@ package brainfuck;
 import java.util.function.Consumer;
 
 import brainfuck.virtualmachine.Machine;
-import brainfuck.virtualmachine.OverflowException;
 
 /**
  * Superclass for all the instructions supported by the Brainfuck language.

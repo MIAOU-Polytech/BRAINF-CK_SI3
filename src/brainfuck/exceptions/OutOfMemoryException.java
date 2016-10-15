@@ -1,4 +1,4 @@
-package brainfuck.virtualmachine;
+package brainfuck.exceptions;
 
 /**
  * Exception thrown when trying to go beyond memory bounds.
