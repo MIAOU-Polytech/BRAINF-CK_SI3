@@ -42,15 +42,13 @@ public class Memory {
 	}
 
 	/**
-	 * Exit the program with code 2 if the given index is outside the memory block.
+	 * Throws an OutOfMemoryException exception if the given index is outside the memory block.
 	 *
 	 * @param i	index to check.
+	 * @throws OutOfMemoryException when an invalid index is supplied.
 	 */
-	public void checkBounds(int i) {
-		if (i < 0 || i >= memory.length) {
-			System.err.println("Error: This data is out of memory");
-			System.exit(2);
-		}
+	public void checkBounds(int i) throws OutOfMemoryException {
+		if (i < 0 || i >= memory.length) throw new OutOfMemoryException(i, memory.length);
 	}
 
 	/**
@@ -58,8 +56,9 @@ public class Memory {
 	 *
 	 * @param i	index in memory.
 	 * @return current value at index i.
+	 * @throws OutOfMemoryException	if the index is outside the memory block.
 	 */
-	public byte get(int i) {
+	public byte get(int i) throws OutOfMemoryException {
 		checkBounds(i);
 		return memory[i];
 	}
@@ -69,8 +68,9 @@ public class Memory {
 	 *
 	 * @param i	index in memory.
 	 * @param value	new value.
+	 * @throws OutOfMemoryException if the index is outside the memory block.
 	 */
-	public void set(int i, byte value) {
+	public void set(int i, byte value) throws OutOfMemoryException {
 		checkBounds(i);
 		memory[i] = value;
 	}

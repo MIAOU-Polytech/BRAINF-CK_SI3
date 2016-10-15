@@ -28,12 +28,9 @@ public class Incr extends Instruction {
 	 * @throws OverflowException	if the current cell value is at it's top limit.
 	 */
 	@Override
-	public void accept(Machine machine) {
+	public void accept(Machine machine) throws OverflowException {
 		byte value = machine.readMemory();
-		if (value >= Byte.MAX_VALUE) {
-			System.err.println("Error: above maximum value");
-	       		System.exit(1);
-		}
+		if (value >= Byte.MAX_VALUE) throw new OverflowException();
 		value++;
 		machine.writeMemory(value);
 	}
