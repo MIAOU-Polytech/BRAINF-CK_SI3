@@ -19,7 +19,7 @@ public class Jump extends Instruction implements ConditionalJump {
 	 * Constructs the Jump instruction.
 	 */
 	public Jump() {
-		super("JUMP", '[', 0xFF9400D3);
+		super("JUMP", '[', 0xFFFF7F00);
 	}
 
 
