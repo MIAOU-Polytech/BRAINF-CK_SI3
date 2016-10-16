@@ -1,5 +1,7 @@
 package brainfuck;
 
+import brainfuck.exceptions.SyntaxException;
+
 /**
  * Parser for the arguments passed through the call of the bfck executable.
  * It also stores the different parsed arguments into fields relative to their function.
@@ -111,18 +113,3 @@ public class ArgParser {
 enum Mode {
 	FILEREAD, IMAGEREAD, REWRITE, TRANSLATE, CHECK
 };
-
-/**
- * An exception thrown when arguments passed through the bfck executable are not correct.
- *
- * @author Julien Lemaire
- */
-class SyntaxException extends RuntimeException {
-	/**
-	 * The main constructor of the <code>SyntaxException</code> class.
-	 * @param message The message to display as an error.
-	 */
-	public SyntaxException(String message) {
-		super(message);
-	}
-}
