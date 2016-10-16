@@ -12,6 +12,7 @@ import brainfuck.Instruction;
 import brainfuck.WriteTextFile;
 import brainfuck.instructions.ConditionalJump;
 import brainfuck.BracketCounter;
+import brainfuck.exceptions.EndOfInputException;
 
 /**
  * Actual virtual machine which processes the instructions and interracts with the memory.
@@ -191,6 +192,7 @@ public class Machine {
  	 * Return the next input value read in the file
 	 *
 	 * @return The next inputted character
+	 * @throws EndOfInputException	if the input didn't have enough character to read.
 	 */
 	public Character getInputFlux(){
 		if(this.inputs == null){
@@ -204,7 +206,7 @@ public class Machine {
 				System.out.println(this.inputs.get(i));
 			}
 			if(this.inputs.isEmpty()){
-				System.exit(42);
+				throw new EndOfInputException();
 			}
 			return this.inputs.remove(0);
 		}

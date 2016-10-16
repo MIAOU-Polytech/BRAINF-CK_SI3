@@ -7,6 +7,7 @@ import java.util.stream.IntStream;
 
 import brainfuck.Instruction;
 import brainfuck.InstructionSet;
+import brainfuck.exceptions.InvalidInstructionException;
 
 /**
  * Parses the instruction from either a stream of String for the two text representations or from a stream of int (color code) for images
@@ -35,9 +36,9 @@ public class InstructionParser {
 	/**
 	 * Constructs an InstructionParser with the given stream of lines and parses it to generate the list of instructions.
 	 * Lines can contain either multiple instruction's symbol for short syntax or a single instruction's keyword for long syntax.
-	 * Calls onError() upon encountering an invalid instruction.
 	 *
-	 * @param stream	stream of lines containing instructions symbols and keywords to parse
+	 * @param stream	stream of lines containing instructions symbols and keywords to parse.
+	 * @throws InvalidInstructionException  when an invalid instruction is encountered.
 	 */
 	public InstructionParser(Stream<String> stream) {
 		this();
@@ -49,10 +50,11 @@ public class InstructionParser {
 					instructions.add(instr);
 				} else {
 					for (int i = 0; i < line.length(); i++) { // Tries to executes the instructions with the short format
-						instr = iset.getOp(line.charAt(i));
+						char c = line.charAt(i);
+						instr = iset.getOp(c);
 						if (instr != null) instructions.add(instr);
 						else {
-							onError();
+							throw new InvalidInstructionException(c);
 						}
 					}
 			}
@@ -62,9 +64,9 @@ public class InstructionParser {
 
 	/**
 	 * Constructs an InstructionParser with the given int stream of color codes and parses it to generate the list of instructions.
-	 * Calls onError() upon encountering an invalid instruction.
 	 *
 	 * @param stream	stream of color codes as integers in the ARVB 32bpp format.
+	 * @throws InvalidInstructionException	when an invalid instruction is encountered.
 	 */
 	public InstructionParser(IntStream stream) {
 		this();
@@ -73,7 +75,7 @@ public class InstructionParser {
 				Instruction instr = iset.getOp(colour);
 				if (instr != null) instructions.add(instr);
 				else {
-					onError();
+					throw new InvalidInstructionException(colour);
 				}
 			}
 		});
@@ -87,15 +89,5 @@ public class InstructionParser {
 	 */
 	public List<Instruction> get() {
 		return instructions;
-	}
-
-	/**
-	 * Exits with code 38.
-	 * Called when an error is encountered while parsing.
-	 * Should be refactored: throw an exception instead.
-	 */
-	private void onError() {
-		System.err.println("Invalid instruction");
-		System.exit(38);
 	}
 }

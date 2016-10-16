@@ -2,6 +2,7 @@ package brainfuck;
 
 import java.util.List;
 import brainfuck.instructions.ConditionalJump;
+import brainfuck.exceptions.BracketMismatchException;
 
 /**
  * Checks whether the program is well formed or not.
@@ -30,8 +31,7 @@ public class Checker {
 		this.instructions = instructions;
 		bracketCounter = new BracketCounter() {
 			@Override protected void onMismatch() {
-				System.err.println("Left and right bracket count not matching");
-				System.exit(4);
+				throw new BracketMismatchException();
 			}
 		};
 	}
