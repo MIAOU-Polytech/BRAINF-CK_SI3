@@ -1,6 +1,7 @@
 package brainfuck;
 
 import java.io.IOException;
+import java.util.List;
 import brainfuck.virtualmachine.Machine;
 import brainfuck.exceptions.BrainfuckException;
 import brainfuck.fileio.WriteImageFile;
@@ -37,23 +38,35 @@ public class Main {
 	 * @throws IOException	in case of IO error on file operation.
 	 */
 	private void run(ArgParser argp) throws IOException {
+		InstructionParser ip;
+
+		if (argp.getType() == Type.IMAGE) {
+			ip = imageRead(argp.getFilename());
+		} else {
+			ip = textFileRead(argp.getFilename());
+		}
+
 		switch(argp.getMode()) {
-			case FILEREAD:
-				execute(textFileRead(argp.getFilename()));
-				break;
-			case IMAGEREAD:
-				execute(imageRead(argp.getFilename()));
+			case READ:
+				execute(ip);
 				break;
 			case REWRITE:
 				Translator tr = new Translator();
-				tr.toShortSyntax(textFileRead(argp.getFilename()).get());
+				tr.toShortSyntax(ip.get());
 				break;
 			case TRANSLATE:
 				Translator tra = new Translator();
-				WriteImageFile iw = new WriteImageFile(tra.toColor(textFileRead(argp.getFilename()).get()));
+				if (argp.getType() == Type.TEXT) {
+					WriteImageFile iw = new WriteImageFile(tra.toColor(textFileRead(argp.getFilename()).get()));
+				} else {
+					List<Integer> colors = tra.toColor(ip.get());
+					for (int i = 0 ; i < colors.size() ; i++) {
+						System.out.printf("%x ", colors.get(i));
+					}
+				}
 				break;
 			case CHECK:
-				Checker checker = new Checker(textFileRead(argp.getFilename()).get());
+				Checker checker = new Checker(ip.get());
 				checker.check();
 				break;
 		}

@@ -14,6 +14,7 @@ public class ArgParser {
 	private String in;
 	private String out;
 	private Mode mode;
+	private Type type;
 
 	/**
 	 * Main constructor of the <code>ArgParser</code> class.
@@ -22,7 +23,8 @@ public class ArgParser {
 	 * @param args Array of String containing all the arguments passed through the executable.
 	 */
 	public ArgParser(String[] args) throws SyntaxException {
-		mode = Mode.FILEREAD; //reading a file by default
+		mode = Mode.READ; //reading a file by default
+		type = Type.TEXT; //the file is considered as text by default
 		//parsing files
 		for (int i = 0 ; i < args.length ; i++) {
 			switch (args[i]) {
@@ -30,7 +32,7 @@ public class ArgParser {
 					if (i+1 < args.length && !(args[i+1].startsWith("-"))) {
 						this.filename = args[i+1];
 						if (this.filename.endsWith(".bmp")) {
-							mode = Mode.IMAGEREAD;
+							type = Type.IMAGE;
 						}
 						i++;
 					} else {
@@ -98,18 +100,18 @@ public class ArgParser {
 	/**
 	 * Getter for the mode of execution.
 	 *
-	 * @return The program's mode of execution (by default "READFILE").
+	 * @return The program's mode of execution (by default READ).
 	 */
 	public Mode getMode() {
 		return mode;
 	}
-}
 
-/**
- * The mode of execution of the current instance of the program.
- *
- * @author Julien Lemaire
- */
-enum Mode {
-	FILEREAD, IMAGEREAD, REWRITE, TRANSLATE, CHECK
-};
+	/**
+	 * Getter for the type of the file matching the filename entry.
+	 *
+	 * @return The type of the used file.
+	 */
+	public Type getType() {
+		return type;
+	}
+}
