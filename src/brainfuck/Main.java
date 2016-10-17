@@ -2,6 +2,10 @@ package brainfuck;
 
 import java.io.IOException;
 import java.util.List;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.Files;
+
 import brainfuck.virtualmachine.Machine;
 import brainfuck.exceptions.BrainfuckException;
 import brainfuck.fileio.WriteImageFile;
@@ -55,14 +59,11 @@ public class Main {
 				tr.toShortSyntax(ip.get());
 				break;
 			case TRANSLATE:
-				Translator tra = new Translator();
 				if (argp.getType() == Type.TEXT) {
+					Translator tra = new Translator();
 					WriteImageFile iw = new WriteImageFile(tra.toColor(textFileRead(argp.getFilename()).get()));
 				} else {
-					List<Integer> colors = tra.toColor(ip.get());
-					for (int i = 0 ; i < colors.size() ; i++) {
-						System.out.printf("%x ", colors.get(i));
-					}
+					Files.copy(Paths.get(argp.getFilename()), System.out); //Copy the image file to stdout
 				}
 				break;
 			case CHECK:
