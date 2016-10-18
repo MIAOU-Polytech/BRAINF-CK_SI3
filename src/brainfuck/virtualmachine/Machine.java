@@ -37,12 +37,17 @@ public class Machine {
 	/**
 	 * Input flux if specified.
 	 */
-	private	List<Character> inputs;
+	//private	List<Character> inputs;
 
 	/**
 	 * Output flux if specified.
 	 */
-	private WriteTextFile output;
+	//private WriteTextFile output;
+
+	/**
+	 * Input and output gateway
+	 */
+	private Io io_access;
 
 	/**
 	 * Current location in memory.
@@ -165,59 +170,20 @@ public class Machine {
 	}
 
 	/**
-	 * Store an input flux in the machine.
-         *
-	 * @param ss	Input flux to load in the machine
-	 */
-	public void setInputFlux(Stream<String> ss){
-		Object[] obArr = ss.toArray();
-		String[] arr = Arrays.copyOf(obArr, obArr.length, String[].class);
-
-		inputs = new ArrayList<Character>();
-
-		for(String s : arr)
-		{
-			for(char c : s.toCharArray())
-			{
-				inputs.add(new Character(c));
-			}
-		}
-	}
-
-	public void setOutputFlux(WriteTextFile wtf){
-		this.output = wtf;
-	}
-
-	/**
  	 * Return the next input value read in the file
 	 *
 	 * @return The next inputted character
 	 * @throws EndOfInputException	if the input didn't have enough character to read.
 	 */
-	public Character getInputFlux(){
-		if(this.inputs == null){
-			Scanner reader = new Scanner(System.in);
-			char c = reader.next().charAt(0);
-			return c;
-		}else{
-			System.out.println(this.inputs.isEmpty());
-			for(int i = 0; i < this.inputs.size(); i++)
-			{
-				System.out.println(this.inputs.get(i));
-			}
-			if(this.inputs.isEmpty()){
-				throw new EndOfInputException();
-			}
-			return this.inputs.remove(0);
-		}
+	public Character getInputFlow(){
+		
 	}
 
-	public void useOutputFlux(String str){
-		if(this.output == null){
-			System.out.println(str);
-		}else{
-			this.output.write(str);
-		}
+	/**
+	 * Set the IO gateway
+	 */
+	public void setIo(Io ac){
+		this.io_access = ac; 
 	}
 
 	/**
