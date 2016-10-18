@@ -42,8 +42,8 @@ public class Main {
 	 * @throws IOException	in case of IO error on file operation.
 	 */
 	private void run(ArgParser argp) throws IOException {
-		InstructionParser ip;
-
+		InstructionParser ip;	
+		
 		if (argp.getType() == Type.IMAGE) {
 			ip = imageRead(argp.getFilename());
 		} else {
@@ -104,8 +104,9 @@ public class Main {
 	 *
 	 * @param ip	InstructionParser which previously parsed a file.
 	 */
-	private void execute(InstructionParser ip) {
+	private void execute(InstructionParser ip, ArgParser agp) {
 		Machine machine = new Machine();
+		machine.setIo(agp.getInput(),agp.getOutput());
 		Interpreter interpreter = new Interpreter(ip.get());
 		interpreter.run(machine);
 	}
