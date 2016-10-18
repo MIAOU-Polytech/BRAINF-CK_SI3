@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.nio.file.Files;
 
 import brainfuck.virtualmachine.Machine;
+import brainfuck.io.Io;
 import brainfuck.exceptions.BrainfuckException;
 import brainfuck.io.WriteImage;
 import brainfuck.io.ReadTextFile;
@@ -52,7 +53,7 @@ public class Main {
 
 		switch(argp.getMode()) {
 			case READ:
-				execute(ip);
+				execute(ip, argp);
 				break;
 			case REWRITE:
 				Translator tr = new Translator();
@@ -106,7 +107,7 @@ public class Main {
 	 */
 	private void execute(InstructionParser ip, ArgParser agp) {
 		Machine machine = new Machine();
-		machine.setIo(agp.getInput(),agp.getOutput());
+		machine.setIo(new Io(agp.getInput(),agp.getOutput()));
 		Interpreter interpreter = new Interpreter(ip.get());
 		interpreter.run(machine);
 	}

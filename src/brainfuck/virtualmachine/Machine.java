@@ -10,6 +10,7 @@ import java.util.Scanner;
 import brainfuck.InstructionSet;
 import brainfuck.Instruction;
 import brainfuck.io.WriteTextFile;
+import brainfuck.io.Io;
 import brainfuck.instructions.ConditionalJump;
 import brainfuck.BracketCounter;
 import brainfuck.exceptions.EndOfInputException;
@@ -35,19 +36,9 @@ public class Machine {
 	private InstructionSet iset;
 
 	/**
-	 * Input flux if specified.
-	 */
-	//private	List<Character> inputs;
-
-	/**
-	 * Output flux if specified.
-	 */
-	//private WriteTextFile output;
-
-	/**
 	 * Input and output gateway
 	 */
-	private Io io_access;
+	private Io ioAccess;
 
 	/**
 	 * Current location in memory.
@@ -175,15 +166,20 @@ public class Machine {
 	 * @return The next inputted character
 	 * @throws EndOfInputException	if the input didn't have enough character to read.
 	 */
-	public Character getInputFlow(){
-		
+	public int getInput(){
+		int c = ioAccess.getInput();	
+		return c;
+	}
+
+	public void output(int c){
+		this.ioAccess.setOutput(c);
 	}
 
 	/**
 	 * Set the IO gateway
 	 */
 	public void setIo(Io ac){
-		this.io_access = ac; 
+		this.ioAccess = ac; 
 	}
 
 	/**
