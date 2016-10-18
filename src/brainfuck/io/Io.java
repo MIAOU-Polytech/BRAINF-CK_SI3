@@ -11,27 +11,36 @@ import brainfuck.exceptions.ReadInputException;
  */
 public class Io{
 
-	private InputStream input;
-	private OutputStream output;
+	/**
+	 * InputStream used as input flow
+	 */
+	private InputStream input = System.in;
+	
+	/**
+	 * OutputStream used as output flow
+	 */
+	private OutputStream output = System.out;
 
+	/**
+	 * Constructs an Io Object used to access in read or write
+	 */
 	public Io(String in, String out) {
 		try{	
 			if(in != null){
 				this.input = new FileInputStream(in);
-			}else{
-				this.input = System.in;
 			}
 		
 			if(out != null){
 				this.output = new FileOutputStream(out);
-			}else{
-				this.output = System.out;
 			}
 		}catch(FileNotFoundException e){
 			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * Get the next input
+	 */	
 	public int getInput() {
 		try{
 			return this.input.read();	
@@ -40,6 +49,9 @@ public class Io{
 		}
 	}
 
+	/**
+	 * Output an int
+	 */
 	public void setOutput(int c) {
 		try{
 			this.output.write(c);
@@ -47,4 +59,5 @@ public class Io{
 			e.printStackTrace();
 		}
 	}
+
 }
