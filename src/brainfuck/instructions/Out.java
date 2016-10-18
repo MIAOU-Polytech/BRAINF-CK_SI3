@@ -29,8 +29,9 @@ public class Out extends Instruction {
 	@Override
 	public void accept(Machine machine) {
 		byte value = machine.readMemory();
-		String str = "" + (char)(value + OFFSET);
-		machine.useOutputFlux(str);
+//		String str = "" + (char)(value + OFFSET);
+		machine.output((int)value + OFFSET);
+//		machine.useOutputFlux(str);
 //		System.out.println(value + OFFSET);
 	}
 }

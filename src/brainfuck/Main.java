@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.nio.file.Files;
 
 import brainfuck.virtualmachine.Machine;
+import brainfuck.io.Io;
 import brainfuck.exceptions.BrainfuckException;
 import brainfuck.io.WriteImage;
 import brainfuck.io.ReadTextFile;
@@ -42,8 +43,8 @@ public class Main {
 	 * @throws IOException	in case of IO error on file operation.
 	 */
 	private void run(ArgParser argp) throws IOException {
-		InstructionParser ip;
-
+		InstructionParser ip;	
+		
 		if (argp.getType() == Type.IMAGE) {
 			ip = imageRead(argp.getFilename());
 		} else {
@@ -52,7 +53,7 @@ public class Main {
 
 		switch(argp.getMode()) {
 			case READ:
-				execute(ip);
+				execute(ip, argp);
 				break;
 			case REWRITE:
 				Translator tr = new Translator();
@@ -104,8 +105,9 @@ public class Main {
 	 *
 	 * @param ip	InstructionParser which previously parsed a file.
 	 */
-	private void execute(InstructionParser ip) {
+	private void execute(InstructionParser ip, ArgParser agp) {
 		Machine machine = new Machine();
+		machine.setIo(new Io(agp.getInput(),agp.getOutput()));
 		Interpreter interpreter = new Interpreter(ip.get());
 		interpreter.run(machine);
 	}
