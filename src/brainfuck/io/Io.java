@@ -41,7 +41,7 @@ public class Io{
 	/**
 	 * Get the next input
 	 */	
-	public int getInput() {
+	public int read() {
 		try{
 			return this.input.read();	
 		}catch(IOException e){
@@ -52,12 +52,11 @@ public class Io{
 	/**
 	 * Output an int
 	 */
-	public void setOutput(int c) {
+	public void write(int c) {
 		try{
 			this.output.write(c);
-		}catch(Exception e){
-			e.printStackTrace();
+		}catch(IOException e){
+			throw new ReadInputException("write error");
 		}
 	}
-
 }

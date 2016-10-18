@@ -166,13 +166,12 @@ public class Machine {
 	 * @return The next inputted character
 	 * @throws EndOfInputException	if the input didn't have enough character to read.
 	 */
-	public int getInput(){
-		int c = ioAccess.getInput();	
-		return c;
+	public int read(){
+		return ioAccess.read();
 	}
 
 	public void output(int c){
-		this.ioAccess.setOutput(c);
+		this.ioAccess.write(c);
 	}
 
 	/**

@@ -30,8 +30,7 @@ public class In extends Instruction {
 	 */
 	@Override
 	public void accept(Machine machine) {
-	//	char c = machine.getInputFlux().charValue();
-		int c = machine.getInput();
+		int c = machine.read();
 		if(c < 0 || c > 255) {
 			throw new OverflowException();
 		}
