@@ -66,6 +66,10 @@ public class MacroParser {
 			body.add(line);
 		}
 
+		void addToBody(Stream<String> lines) {
+			lines.forEach(this::addToBody);
+		}
+
 		/**
 		 * Returns the <code>Macro</code>'s body as a stream.
 		 *
@@ -144,7 +148,12 @@ public class MacroParser {
 			}
 
 			if (state == State.MACRO_NAME) macroName = line;
-			if (state == State.MACRO_BODY) macro.addToBody(line);
+			if (state == State.MACRO_BODY) {
+				if (macros.containsKey(line)) // Recursive macro
+					macro.addToBody(macros.get(line).getBody());
+				else
+					macro.addToBody(line);
+			}
 
 			if (state == State.NO_MACRO) {
 				if (macros.containsKey(line)) { // We've got a macro right there, try to replace it. Naive check so you can be evil and declare a "+" macro.
