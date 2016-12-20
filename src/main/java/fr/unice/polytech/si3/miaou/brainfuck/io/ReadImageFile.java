@@ -1,7 +1,6 @@
 package fr.unice.polytech.si3.miaou.brainfuck.io;
 
 import java.awt.image.BufferedImage;
-import java.awt.Color;
 import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.io.FileNotFoundException;
@@ -34,10 +33,14 @@ public class ReadImageFile {
 	 */
 	public ReadImageFile(String filename) throws IOException {
 		File file = new File(filename);
-		if (!file.exists()) throw new FileNotFoundException();
+		if (!file.exists())
+			throw new FileNotFoundException();
 
 		BufferedImage img = ImageIO.read(file);
 		colors = IntStream.builder();
+
+		if (img == null) // Could not decode file (empty?)
+			return;
 
 		int height = img.getHeight();
 		int width = img.getWidth();

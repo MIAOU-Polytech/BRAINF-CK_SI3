@@ -7,8 +7,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
-import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
-
 /**
  * Opens a file and provide a Stream to read the data from.
  *
@@ -30,7 +28,8 @@ public class ReadTextFile {
 	 */
 	public ReadTextFile(String filename) throws FileNotFoundException {
 		this.path = Paths.get(filename);
-		if (!Files.exists(path)) throw new FileNotFoundException();
+		if (!Files.exists(path))
+			throw new FileNotFoundException();
 	}
 
 	/**

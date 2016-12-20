@@ -12,11 +12,8 @@ import static org.junit.Assert.*;
 
 import org.junit.rules.TemporaryFolder;
 
-import fr.unice.polytech.si3.miaou.brainfuck.exceptions.InputFileNotFoundException;
-
 
 public class ReadTextFileTest {
-	private static final int SIZE_SQUARE = 3;
 	ReadTextFile rif;
 
 	@Rule
