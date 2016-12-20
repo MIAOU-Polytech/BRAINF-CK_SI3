@@ -2,7 +2,6 @@ package fr.unice.polytech.si3.miaou.brainfuck.instructions;
 
 import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.OverflowException;
-import fr.unice.polytech.si3.miaou.brainfuck.Metrics;
 
 /**
  * Incr instruction: increments the current memory cell by one.
@@ -28,10 +27,11 @@ public class Incr extends WriteMemory {
 	 * @throws OverflowException	if the current cell value is at it's top limit.
 	 */
 	@Override
-	public void accept(Machine machine) throws OverflowException {
+	public void accept(Machine machine) {
 		super.accept(machine);
 		byte value = machine.readMemory();
-		if (value >= Byte.MAX_VALUE) throw new OverflowException("Above maximum value");
+		if (value >= Byte.MAX_VALUE)
+			throw new OverflowException("Above maximum value");
 		value++;
 		machine.writeMemory(value);
 	}

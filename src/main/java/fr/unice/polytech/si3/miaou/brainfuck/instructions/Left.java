@@ -1,7 +1,6 @@
 package fr.unice.polytech.si3.miaou.brainfuck.instructions;
 
 import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
-import fr.unice.polytech.si3.miaou.brainfuck.Metrics;
 
 /**
  * Left instruction: move to the previous memory cell.

@@ -2,7 +2,6 @@ package fr.unice.polytech.si3.miaou.brainfuck.instructions;
 
 import fr.unice.polytech.si3.miaou.brainfuck.BracketCounter;
 import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
-import fr.unice.polytech.si3.miaou.brainfuck.Metrics;
 
 /**
  * Jump instruction: jump to the instruction right after the associated BACK if the pointed

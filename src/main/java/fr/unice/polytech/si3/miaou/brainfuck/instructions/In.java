@@ -4,7 +4,6 @@ import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.InputOutputException;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.EndOfInputException;
 import static fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Memory.OFFSET;
-import fr.unice.polytech.si3.miaou.brainfuck.Metrics;
 
 /**
  * Reads and store a byte in the current memory cell.
@@ -36,8 +35,6 @@ public class In extends WriteMemory {
 		int c = machine.getInput();
 		if (c == -1) {
 			throw new EndOfInputException();
-		} else if (c < 0 || c > 255) {
-			throw new InputOutputException("Read error from input stream: " + c);
 		}
 		c -= OFFSET;
 		machine.writeMemory((byte) c);

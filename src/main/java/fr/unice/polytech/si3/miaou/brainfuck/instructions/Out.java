@@ -2,7 +2,6 @@ package fr.unice.polytech.si3.miaou.brainfuck.instructions;
 
 import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
 import static fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Memory.OFFSET;
-import fr.unice.polytech.si3.miaou.brainfuck.Metrics;
 
 /**
  * Print out the contents of the pointed memory cell on output.

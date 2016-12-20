@@ -4,26 +4,38 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
+import fr.unice.polytech.si3.miaou.brainfuck.Metrics;
+
 public class RightTest {
-	Instruction back;
+	Instruction right;
+	Machine machine;
 
 	@Before
 	public void setUp() {
-		back = new Right();
+		right = new Right();
+		machine = new Machine();
 	}
 
 	@Test
 	public void nameTest() {
-		assertEquals("RIGHT", back.getName());
+		assertEquals("RIGHT", right.getName());
 	}
 
 	@Test
 	public void symbolTest() {
-		assertEquals('>', back.getSymbol());
+		assertEquals('>', right.getSymbol());
 	}
 
 	@Test
 	public void colorTest() {
-		assertEquals(0xFF0000FF, back.getColor());
+		assertEquals(0xFF0000FF, right.getColor());
+	}
+
+	@Test
+	public void acceptTest() {
+		right.accept(machine);
+		assertEquals(1, machine.getLocation());
+		assertTrue(0 != Metrics.DATA_MOVE.value());
 	}
 }
