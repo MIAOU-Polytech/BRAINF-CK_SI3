@@ -22,7 +22,7 @@ public class Memory {
 	/**
 	 * Memory block allocated for the virtual machine.
 	 */
-	private byte[] memory;
+	private byte[] array;
 
 	/**
 	 * Constructs a new Memory with given size.
@@ -30,9 +30,9 @@ public class Memory {
 	 * @param size	wanted memory size.
 	 */
 	public Memory(int size) {
-		memory = new byte[size];
-		for (int i = 0; i < memory.length; i++) {
-			memory[i] = Byte.MIN_VALUE;
+		array = new byte[size];
+		for (int i = 0; i < array.length; i++) {
+			array[i] = Byte.MIN_VALUE;
 		}
 	}
 
@@ -49,8 +49,9 @@ public class Memory {
 	 * @param i	index to check.
 	 * @throws OutOfMemoryException when an invalid index is supplied.
 	 */
-	public void checkBounds(int i) throws OutOfMemoryException {
-		if (i < 0 || i >= memory.length) throw new OutOfMemoryException(i, memory.length);
+	public void checkBounds(int i) {
+		if (i < 0 || i >= array.length)
+			throw new OutOfMemoryException(i, array.length);
 	}
 
 	/**
@@ -60,9 +61,9 @@ public class Memory {
 	 * @return current value at index i.
 	 * @throws OutOfMemoryException	if the index is outside the memory block.
 	 */
-	public byte get(int i) throws OutOfMemoryException {
+	public byte get(int i) {
 		checkBounds(i);
-		return memory[i];
+		return array[i];
 	}
 
 	/**
@@ -72,9 +73,9 @@ public class Memory {
 	 * @param value	new value.
 	 * @throws OutOfMemoryException if the index is outside the memory block.
 	 */
-	public void set(int i, byte value) throws OutOfMemoryException {
+	public void set(int i, byte value) {
 		checkBounds(i);
-		memory[i] = value;
+		array[i] = value;
 	}
 
 	/**
@@ -87,9 +88,9 @@ public class Memory {
 	@Override
 	public String toString() {
 		StringBuilder tmp = new StringBuilder();
-		for (int i = 0; i < memory.length; i++) {
-			if (memory[i] != Byte.MIN_VALUE) {
-				tmp.append("C" + i + ": " + (memory[i] + OFFSET) + "\n");
+		for (int i = 0; i < array.length; i++) {
+			if (array[i] != Byte.MIN_VALUE) {
+				tmp.append("C" + i + ": " + (array[i] + OFFSET) + "\n");
 			}
 		}
 		return tmp.toString();
