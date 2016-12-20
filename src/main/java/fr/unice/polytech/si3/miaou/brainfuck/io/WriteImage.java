@@ -1,13 +1,10 @@
 package fr.unice.polytech.si3.miaou.brainfuck.io;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.FileNotFoundException;
 import javax.imageio.ImageIO;
 import java.util.List;
 import java.awt.image.BufferedImage;
 import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.awt.Color;
 
 /**
@@ -59,6 +56,10 @@ public class WriteImage {
 		//The image has nbCol² cells. Furthermore, there should be more cells than colors.size().
 		//So, one column contains the value rounded off to the superiors of the square root of the number of instructions.
 		nbCol = (int)Math.ceil(Math.sqrt(colors.size()));
+
+		if (nbCol <= 0) // Workaround in case of empty list (BufferedImage doesn't accept null width or height)
+			nbCol = 1; // Generate one black SIZE_SQUARE*SIZE_SQUARE tile
+
 		image = new BufferedImage(SIZE_SQUARE*nbCol, SIZE_SQUARE*nbCol, BufferedImage. TYPE_INT_RGB);
 		graph = image.createGraphics();
 		draw();
