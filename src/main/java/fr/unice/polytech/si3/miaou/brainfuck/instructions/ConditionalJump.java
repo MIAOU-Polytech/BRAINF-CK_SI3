@@ -1,7 +1,5 @@
 package fr.unice.polytech.si3.miaou.brainfuck.instructions;
 
-import fr.unice.polytech.si3.miaou.brainfuck.BracketCounter;
-
 /**
  * Describes a conditional jump instruction (Jump or Back).
  */
@@ -17,10 +15,4 @@ public abstract class ConditionalJump extends ReadMemory {
 		super(name, symbol, color);
 	}
 
-	/**
-	 * Called when we need to increment a value in the BracketCounter.
-	 *
-	 * @param bc	BracketCounter whose counter is to be incremented.
-	 */
-	abstract public void incr(BracketCounter bc);
 }

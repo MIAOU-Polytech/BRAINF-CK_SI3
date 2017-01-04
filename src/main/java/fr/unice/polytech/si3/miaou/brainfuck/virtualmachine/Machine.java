@@ -13,7 +13,6 @@ import fr.unice.polytech.si3.miaou.brainfuck.io.Io;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.ConditionalJump;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Jump;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Back;
-import fr.unice.polytech.si3.miaou.brainfuck.BracketCounter;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.EndOfInputException;
 
 /**
@@ -51,22 +50,10 @@ public class Machine {
 	private boolean reversed = false;
 
 	/**
-	 * Bracket counter for conditional jumps instruction matching.
-	 */
-	private BracketCounter bracketCounter;
-
-	/**
 	 * Constructs a new virtual machine, initialize its Memory.
 	 */
 	public Machine() {
 		memory = new Memory();
-		bracketCounter = new BracketCounter() { // Anonymous class for defining the onMatch() callback method.
-			@Override protected void onMatch() {
-				Machine.this.setJumping(false);
-				Machine.this.setReversed(false);
-				this.reset();
-			}
-		};
 	}
 
 	/**

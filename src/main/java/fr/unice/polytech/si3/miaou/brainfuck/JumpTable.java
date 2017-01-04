@@ -1,17 +1,18 @@
 package fr.unice.polytech.si3.miaou.brainfuck;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Deque;
 import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.EmptyStackException;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
-
-import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
-import fr.unice.polytech.si3.miaou.brainfuck.instructions.Jump;
+import fr.unice.polytech.si3.miaou.brainfuck.exceptions.BracketMismatchException;
+import fr.unice.polytech.si3.miaou.brainfuck.exceptions.InvalidInstructionException;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Back;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.ConditionalJump;
-import fr.unice.polytech.si3.miaou.brainfuck.exceptions.InvalidInstructionException;
+import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
+import fr.unice.polytech.si3.miaou.brainfuck.instructions.Jump;
 
 /**
  * instructions from a List and execute them.
@@ -40,6 +41,15 @@ public class JumpTable {
 	}
 
 	/**
+	 * Performs the Jump/back instructions check
+	 */
+	public void check() {
+		if (!this.intermediateStack.isEmpty()) {
+			throw new BracketMismatchException();
+		}
+	}
+
+	/**
 	 * Add and associate a Jump/Back instruction to its corresponding instruction
 	 *
 	 * @param i The instruction to add in the Jumptable
@@ -50,10 +60,14 @@ public class JumpTable {
 		if (i instanceof Jump) {
 			this.intermediateStack.push(new Integer(index));
 		} else if (i instanceof Back) {
-			Integer jumpIndex = this.intermediateStack.pop();
-			Integer backIndex = index;
-			this.conditionnalJumpMap.put(jumpIndex, backIndex);
-			this.conditionnalJumpMap.put(backIndex, jumpIndex);
+			try {
+				Integer jumpIndex = this.intermediateStack.pop();
+				Integer backIndex = index;
+				this.conditionnalJumpMap.put(jumpIndex, backIndex);
+				this.conditionnalJumpMap.put(backIndex, jumpIndex);
+			} catch(EmptyStackException e) {
+				throw new BracketMismatchException();
+			}
 		}
 	}
 

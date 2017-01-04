@@ -1,6 +1,5 @@
 package fr.unice.polytech.si3.miaou.brainfuck.instructions;
 
-import fr.unice.polytech.si3.miaou.brainfuck.BracketCounter;
 import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
 import fr.unice.polytech.si3.miaou.brainfuck.Metrics;
 
@@ -39,13 +38,4 @@ public class Jump extends ConditionalJump {
 		}
 	}
 
-	/**
-	 * Increments the left bracket counter.
-	 *
-	 * @param bc	BracketCounter whose left bracket count is to be incremented.
-	 */
-	@Override
-	public void incr(BracketCounter bc) {
-		bc.incrLeft();
-	}
 }

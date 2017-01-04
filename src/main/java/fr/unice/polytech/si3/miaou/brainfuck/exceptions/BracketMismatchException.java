@@ -1,7 +1,7 @@
 package fr.unice.polytech.si3.miaou.brainfuck.exceptions;
 
 /**
- * Exception thrown when the Checker finds a mismatch between the Jump and Back instruction counters.
+ * Exception thrown when the check finds a mismatch between the Jump and Back instruction counters.
  *
  * @author Pierre-Emmanuel Novac
  */

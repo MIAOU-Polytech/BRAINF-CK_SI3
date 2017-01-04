@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
 import fr.unice.polytech.si3.miaou.brainfuck.io.Io;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.BrainfuckException;
+import fr.unice.polytech.si3.miaou.brainfuck.exceptions.BracketMismatchException;
 import fr.unice.polytech.si3.miaou.brainfuck.io.WriteImage;
 import fr.unice.polytech.si3.miaou.brainfuck.io.ReadTextFile;
 import fr.unice.polytech.si3.miaou.brainfuck.io.ReadImageFile;
@@ -42,12 +43,16 @@ public class Main {
 	 * @throws IOException		in case of IO error on file operation.
 	 */
 	public static void main(String[] args) throws IOException {
+		ArgParser ap = null;
 		try {
-			Main app = new Main(new ArgParser(args));
+			ap = new ArgParser(args);
+			Main app = new Main(ap);
 			app.run();
 		} catch (BrainfuckException e) {
-			System.err.println(e);
-			System.exit(e.getErrorCode());
+			if (!(e instanceof BracketMismatchException) || ap.getMode() == Mode.RUN || ap.getMode() == Mode.CHECK) {
+				System.err.println(e);
+				System.exit(e.getErrorCode());
+			}
 		}
 	}
 
@@ -115,13 +120,12 @@ public class Main {
 	}
 
 	/**
-	 * Starts the Checker to make sure the program is well-formed.
+	 * Starts the check to make sure the program is well-formed.
 	 *
 	 * @param ip	InstructionParser which previously parsed a file.
 	 */
 	private void check(InstructionParser ip) {
-		Checker checker = new Checker(ip.get());
-		checker.check();
+		ip.getJumpTable().check();
 	}
 
 	/**
