@@ -1,4 +1,4 @@
-package fr.unice.polytech.si3.miaou.brainfuck;
+package fr.unice.polytech.si3.miaou.brainfuck.parser;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -18,7 +18,7 @@ import fr.unice.polytech.si3.miaou.brainfuck.exceptions.SyntaxMacroException;
  * @author Julien Lemaire
  * @see <a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html">Function</a>
  */
-public class MacroParser implements Function<String, Stream<String>> {
+class MacroParser implements Function<String, Stream<String>> {
 	/**
 	 * Different states of the <code>Macro</code> parsing process.
 	 *

@@ -1,7 +1,8 @@
-package fr.unice.polytech.si3.miaou.brainfuck;
+package fr.unice.polytech.si3.miaou.brainfuck.parser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.IntStream;
 
@@ -32,6 +33,11 @@ public class InstructionParser {
 	private JumpTable jumptable;
 
 	/**
+	 * Position of main program in instruction memory.
+	 */
+	private int mainPosition;
+
+	/**
 	 * Constructs an InsturctionParser with an empty list of instructions and creates the InstructionSet object.
 	 */
 	private InstructionParser() {
@@ -50,33 +56,15 @@ public class InstructionParser {
 	public InstructionParser(Stream<String> stream) {
 		this();
 
+		FunctionsParser functionsParser = new FunctionsParser(iset);
+
 		stream.filter(l -> !l.startsWith("#")) // Remove lines starting with a comment
-		.map(l -> {
-			int p = l.indexOf("#");
-			if (p > 0) l = l.substring(0, p); // Remove comments from the line
-			return l.trim(); // Remove leading and trailing whitespaces from the line
-		})
+		.map(new CommentsAndIndentationParser())
 		.flatMap(new MacroParser()) // Expand macros
-		.forEachOrdered(line -> {
-			Instruction instr = iset.getOp(line); // Tries to parse the whole line (ie. long format)
+		.flatMap(functionsParser)
+		.forEachOrdered(new InstructionTextParser(instructions, jumptable, iset));
 
-			if (instr != null) {
-				instructions.add(instr);
-				jumptable.bind(instr, instructions.size());
-			} else {
-				for (int i = 0; i < line.length(); i++) { // Tries to executes the instructions with the short format
-					char c = line.charAt(i);
-					if (c == ' ' || c == '\t') continue;
-
-					instr = iset.getOp(c);
-
-					if (instr == null) throw new InvalidInstructionException(c);
-					instructions.add(instr);
-					jumptable.bind(instr, instructions.size());
-				}
-			}
-			//jumptable.showTable();
-		});
+		mainPosition = functionsParser.getCounter();
 	}
 
 	/**
@@ -87,15 +75,8 @@ public class InstructionParser {
 	 */
 	public InstructionParser(IntStream stream) {
 		this();
-		stream.forEachOrdered(colour -> {
-			if (colour != 0xFF000000) { // Skip black
-				Instruction instr = iset.getOp(colour);
-				if (instr != null) instructions.add(instr);
-				else {
-					throw new InvalidInstructionException(colour);
-				}
-			}
-		});
+
+		stream.forEachOrdered(new InstructionImageParser(instructions, jumptable, iset));
 	}
 
 	/**
@@ -116,4 +97,23 @@ public class InstructionParser {
 	public JumpTable getJumpTable() {
 		return this.jumptable;
 	}
+
+	/**
+	 * Returns the position of the main program into the instruction memory.
+	 *
+	 * @return the position of the main program into the instruction memory.
+	 */
+	public int getMainPosition() {
+		return mainPosition;
+	}
+
+	/**
+	 * Returns the size of the instructions list.
+	 *
+	 * @return the size of the instructions list.
+	 */
+	public int getInstructionsSize() {
+		return instructions.size();
+	}
 }
+

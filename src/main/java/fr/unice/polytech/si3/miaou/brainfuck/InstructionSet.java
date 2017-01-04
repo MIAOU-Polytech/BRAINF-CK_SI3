@@ -14,7 +14,7 @@ public class InstructionSet {
 	/**
 	 * Lists all Instruction objects (instantiated from their respective classes).
 	 */
-	private final static Instruction[] instructions = {new Incr(), new Decr(), new Right(), new Left(), new In(), new Out(), new Jump(), new Back()};
+	private final static Instruction[] instructions = {new Incr(), new Decr(), new Right(), new Left(), new In(), new Out(), new Jump(), new Back(), new Return()};
 
 	/**
 	 * Maps between the instruction's keyword and the instruction object for easy fetching.
@@ -32,17 +32,50 @@ public class InstructionSet {
 	private HashMap<Integer, Instruction> colors;
 
 	/**
+	 * Maps between a procedure's name and its affiliated instruction.
+	 */
+	private HashMap<String, Procedure> procedures;
+
+	/**
 	 * Constructs the instruction set and populates the HashMaps.
 	 */
 	public InstructionSet() {
 		names = new HashMap<>();
 		symbols = new HashMap<>();
 		colors = new HashMap<>();
+		procedures = new HashMap<>();
 		for (Instruction instruction: instructions) {
-			names.put(instruction.getName(), instruction);
-			symbols.put(instruction.getSymbol(), instruction);
-			colors.put(instruction.getColor(), instruction);
+			if (!instruction.getName().isEmpty()) {
+				names.put(instruction.getName(), instruction);
+			}
+			if (instruction.getSymbol() != '\0') {
+				symbols.put(instruction.getSymbol(), instruction);
+			}
+			if (instruction.getColor() != 0) {
+				colors.put(instruction.getColor(), instruction);
+			}
 		}
+	}
+
+	/**
+	 * Adds a Procedure to procedures map, if not added yet.
+	 *
+	 * @param procedure the procedure to add.
+	 */
+	public void addProc(Procedure procedure) {
+		if (!procedures.containsKey(procedure.getName())) {
+			procedures.put(procedure.getName(), procedure);
+		}
+	}
+
+	/**
+	 * Gets the procedure's object by its keyword.
+	 *
+	 * @param name Procedure's name.
+	 * @return	Corresponding Procedure object.
+	 */
+	public Procedure getProc(String name) {
+		return procedures.get(name);
 	}
 
 	/**

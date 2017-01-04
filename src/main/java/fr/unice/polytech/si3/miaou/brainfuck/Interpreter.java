@@ -20,11 +20,6 @@ public class Interpreter {
 	private List<Instruction> instructions;
 
 	/**
-	 * Jumptable used to associate ConditionalJump instructions
-	 */
-	private JumpTable jumptable;
-
-	/**
 	 * The Logger for the current instance of the program.
 	 */
 	private Logger logger;
@@ -33,11 +28,9 @@ public class Interpreter {
 	 * Constructs an interpreter using the given List of Instruction.
 	 *
 	 * @param instructions 	List of Instruction containing instructions to execute.
-	 * @param jumptable     The jumptable containing conditional jumps positions
 	 */
-	public Interpreter(List<Instruction> instructions, JumpTable jumptable) {
+	public Interpreter(List<Instruction> instructions) {
 		this.instructions = instructions;
-		this.jumptable = jumptable;
 	}
 
 	/**
@@ -57,18 +50,12 @@ public class Interpreter {
 	 * @throws IOException	if any attempt to write in the log file failed.
 	 */
 	public void run(Machine machine) throws IOException {
-		int i = 0;
 		Metrics.PROG_SIZE.set(instructions.size());
 		Metrics.EXEC_TIME.start();
-		while (i >= 0 && i < instructions.size()) {
+		for (int i = machine.getInstrPointer() ; i >= 0 && i < instructions.size() ; i = machine.getInstrPointer()) {
 			machine.executeOp(instructions.get(i));
 			if (logger != null) {
 				logger.logStep(i, instructions.get(i), machine);
-			}
-			if (machine.isJumping()){
-				i = jumptable.getJump(i).intValue();
-			} else {
-				i++;
 			}
 			Metrics.EXEC_MOVE.incr();
 		}

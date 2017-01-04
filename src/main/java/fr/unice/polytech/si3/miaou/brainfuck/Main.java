@@ -2,11 +2,10 @@ package fr.unice.polytech.si3.miaou.brainfuck;
 
 import java.io.IOException;
 import java.io.FileNotFoundException;
-import java.util.List;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.Files;
 
+import fr.unice.polytech.si3.miaou.brainfuck.parser.InstructionParser;
 import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
 import fr.unice.polytech.si3.miaou.brainfuck.io.Io;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.BrainfuckException;
@@ -136,9 +135,9 @@ public class Main {
 	 * @throws IOException			if writing the log failed (when one has to be written).
 	 */
 	private void execute(InstructionParser ip) throws FileNotFoundException, IOException {
-		Machine machine = new Machine();
+		Machine machine = new Machine(ip.getMainPosition(), ip.getJumpTable());
 		machine.setIo(new Io(argp.getInput(),argp.getOutput()));
-		Interpreter interpreter = new Interpreter(ip.get(), ip.getJumpTable());
+		Interpreter interpreter = new Interpreter(ip.get());
 		if (argp.isTracing()) {
 			Logger log = new Logger(argp.getFilename());
 			interpreter.setLogger(log);

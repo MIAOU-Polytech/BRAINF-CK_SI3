@@ -30,11 +30,8 @@ public class Jump extends ConditionalJump {
 	@Override
 	public void accept(Machine machine) {
 		super.accept(machine);
-		if (!machine.isJumping() && machine.readMemory() == Byte.MIN_VALUE) {
-			machine.setJumping(true);
-		} else {
-			machine.setReversed(false);
-			machine.setJumping(false);
+		if (machine.readMemory() == Byte.MIN_VALUE) {
+			machine.jump();
 		}
 	}
 
