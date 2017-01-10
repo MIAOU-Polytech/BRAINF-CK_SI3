@@ -2,7 +2,6 @@ package fr.unice.polytech.si3.miaou.brainfuck.parser;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.IntStream;
 
@@ -106,14 +105,4 @@ public class InstructionParser {
 	public int getMainPosition() {
 		return mainPosition;
 	}
-
-	/**
-	 * Returns the size of the instructions list.
-	 *
-	 * @return the size of the instructions list.
-	 */
-	public int getInstructionsSize() {
-		return instructions.size();
-	}
 }
-

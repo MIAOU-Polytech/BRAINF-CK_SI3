@@ -6,7 +6,9 @@ import fr.unice.polytech.si3.miaou.brainfuck.exceptions.SyntaxFunctionException;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Procedure;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -32,6 +34,11 @@ class FunctionsParser implements Function<String, Stream<String>> {
 	 * Name of the currently parsed function.
 	 */
 	private String name;
+
+	/**
+	 * Parameter of a procedure.
+	 */
+	private Optional<Integer> parameter;
 
 	/**
 	 * Instructions counter.

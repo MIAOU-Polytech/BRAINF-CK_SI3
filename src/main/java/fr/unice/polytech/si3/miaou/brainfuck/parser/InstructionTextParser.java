@@ -5,6 +5,7 @@ import fr.unice.polytech.si3.miaou.brainfuck.JumpTable;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.InvalidInstructionException;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Procedure;
+import fr.unice.polytech.si3.miaou.brainfuck.instructions.Return;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,8 +35,17 @@ class InstructionTextParser implements Consumer<String> {
 
 		if (instr != null) {
 			addAndBindInstructions(instr);
+		} else if ("RET".equals(split[0])) {
+			instr = iset.getOp("RET");
+			if (split.length > 1) {
+				((Return)instr).setReturnValue(Integer.parseInt(split[1]));
+			}
+			instructions.add(instr);
 		} else if (iset.getProc(split[0]) != null) {
 			Procedure proc = iset.getProc(split[0]);
+			if (split.length > 1) {
+				proc.setParameter(Integer.parseInt(split[1]));
+			}
 			instructions.add(proc);
 		} else {
 			for (int i = 0; i < line.length(); i++) { // Tries to executes the instructions with the short format
