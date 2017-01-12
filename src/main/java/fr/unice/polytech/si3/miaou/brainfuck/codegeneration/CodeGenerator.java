@@ -68,7 +68,7 @@ public class CodeGenerator {
 	}
 
 	/**
-	 * Writes the equivalent of a call of an instruction in C.
+	 * Writes the equivalent of a call of an instruction in another language.
 	 */
 	public void writeInstructions(List<Instruction> instructions) {
 		for (int i = entryPoint; i < instructions.size(); i++) {
@@ -76,6 +76,12 @@ public class CodeGenerator {
 		}
 	}
 
+	/**
+	 * Writes the structure of a procedure.
+	 *
+	 * @param proc  the procedure to be written.
+	 * @param instructions  the list of all instructions of the bfck program.
+	 */
 	private void writeProcedure(Procedure proc, List<Instruction> instructions) {
 		wtf.write(lang.buildProcedureDeclaration(proc.getName()));
 		for (int i = proc.getPosition(); i < instructions.size(); i++) {
@@ -85,6 +91,12 @@ public class CodeGenerator {
 		}
 	}
 
+	/**
+	 * Writes all the procedures of the program.
+	 *
+	 * @param procs  the list of all the procedures of the program.
+	 * @param instructions  the list of all instructions of the bfck program.
+	 */
 	private void writeProcedures(Collection<Procedure> procs, List<Instruction> instructions) {
 		for (Procedure proc : procs)
 			writeProcedure(proc, instructions);

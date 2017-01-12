@@ -30,6 +30,9 @@ abstract class Language {
 
 	/**
 	 * Constructs a Language object and create the map of instructions.
+	 *
+	 * @param name  the name of the language.
+	 * @param extension  the symbol of the extension of the language.
 	 */
 	Language(String name, String extension) {
 		instructionsTranslation = new HashMap<>();
@@ -39,6 +42,8 @@ abstract class Language {
 
 	/**
 	 * Picks an instruction and gives its equivalent in another language.
+	 *
+	 * @param instr  the instruction to translate.
 	 */
 	abstract String translateInstruction(Instruction instr);
 
@@ -47,6 +52,11 @@ abstract class Language {
 	 */
 	abstract String buildHeader();
 
+	/**
+	 * Writes the declaration of a procedure.
+	 *
+	 * @param procname  the name of the procedure.
+	 */
 	abstract String buildProcedureDeclaration(String procname);
 
 	/**
@@ -56,13 +66,22 @@ abstract class Language {
 
 	/**
 	 * Creates the io files.
+	 *
+	 * @param in  input name.
+	 * @param out  output name.
 	 */
 	abstract String io(String in, String out);
 
+	/**
+	 * Adds the equivalent of an instructions thanks to its code.
+	 */
 	void addTranslation(Class<? extends Instruction> instr, String code) {
 		instructionsTranslation.put(instr, code);
 	}
 
+	/**
+	 * Gets the equivalent of an instructions thanks to its code.
+	 */
 	String getTranslation(Class<? extends Instruction> instr) {
 		return instructionsTranslation.get(instr);
 	}
