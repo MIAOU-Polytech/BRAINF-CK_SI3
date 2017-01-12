@@ -5,6 +5,7 @@ import fr.unice.polytech.si3.miaou.brainfuck.Procedure;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.SyntaxFunctionException;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.ProcedureCall;
+import fr.unice.polytech.si3.miaou.brainfuck.instructions.Return;
 
 import java.util.List;
 import java.util.function.Function;
@@ -119,12 +120,26 @@ class FunctionsParser implements Function<String, Stream<String>> {
 	 * @return ProcedureCall object corresponding to the current procedure call.
 	 */
 	public ProcedureCall parseCall(String split[]) {
-		ProcedureCall proc;
-		if (split.length > 1) {
-			proc = new ProcedureCall(iset.getProc(split[0]), Integer.parseInt(split[1]));
-		} else {
-			proc = new ProcedureCall(iset.getProc(split[0]));
+		if (split.length < 1)
+			return null;
+		else {
+			Procedure proc = iset.getProc(split[0]);
+			if (proc == null)
+				return null;
+
+			if (split.length > 1)
+				return new ProcedureCall(proc, Integer.parseInt(split[1]));
+			else
+				return new ProcedureCall(proc);
 		}
-		return proc;
+	}
+
+	public Return parseReturn(String split[]) {
+		if (split.length == 2) { // length == 1 means instruction should have been recognized earlier
+			Instruction instr = iset.getOp(split[0]);
+			if (instr instanceof Return)
+				return new Return(Integer.parseInt(split[1]));
+		}
+		return null;
 	}
 }

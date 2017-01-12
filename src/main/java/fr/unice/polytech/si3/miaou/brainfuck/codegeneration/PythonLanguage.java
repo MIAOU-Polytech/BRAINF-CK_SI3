@@ -1,6 +1,6 @@
 package fr.unice.polytech.si3.miaou.brainfuck.codegeneration;
 
-import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
+import fr.unice.polytech.si3.miaou.brainfuck.instructions.*;
 
 /**
  * Translates a brainfuck program in Python.
@@ -8,6 +8,9 @@ import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
  * @author Guillaume Casagrande
  */
 class PythonLanguage extends Language {
+	public static final String NAME = "python";
+	public static final String EXTENSION = "py";
+
 	/**
 	 * Counts the number of tabulations to add before the writing of an instruction.
 	 */
@@ -17,74 +20,64 @@ class PythonLanguage extends Language {
 	 * Constructs a PythonLanguage object and fills the map of instructions.
 	 */
 	PythonLanguage() {
-		super();
-		extension = "py";
-		name = "python";
+		super(NAME, EXTENSION);
 		spaces = 0;
 
-		instructionsTranslation.put(']', "");
-		instructionsTranslation.put('-', "memory[i] -= 1");
-		instructionsTranslation.put(',', "memory[i] = ord(finput.read(1))");
-		instructionsTranslation.put('+', "memory[i] += 1");
-		instructionsTranslation.put('[', "while not memory[i] == 0:");
-		instructionsTranslation.put('<', "i -= 1");
-		instructionsTranslation.put('.', "foutput.write(chr(memory[i]))");
-		instructionsTranslation.put('>', "i += 1");
+		addTranslation(Back.class, "");
+		addTranslation(Decr.class, "memory[i] -= 1");
+		addTranslation(In.class, "memory[i] = ord(finput.read(1))");
+		addTranslation(Incr.class, "memory[i] += 1");
+		addTranslation(Jump.class, "while not memory[i] == 0:");
+		addTranslation(Left.class, "i -= 1");
+		addTranslation(Out.class, "foutput.write(chr(memory[i]))");
+		addTranslation(Right.class, "i += 1");
 	}
 
 	@Override
 	String translateInstruction(Instruction instr) {
-		sb = new StringBuilder();
+		String s = "";
 		for (int i = spaces; i > 0; i--) {
-			sb.append("    ");
+			s += "    ";
 		}
-		if ('[' == (instr.getSymbol())) { spaces++; }
-		else if (']' == (instr.getSymbol())) { spaces--; }
+		if (Jump.class == instr.getClass()) { spaces++; }
+		else if (Back.class == instr.getClass()) { spaces--; }
 
-		sb.append(instructionsTranslation.get(instr.getSymbol()));
-		return sb.toString();
+		s += getTranslation(instr.getClass());
+		return s;
 	}
 
 	@Override
-	String buildFront() {
-		sb = new StringBuilder();
-		sb.append("#!/usr/bin/env python\n");
-		sb.append("#coding: latin-1\n\n");
-		sb.append("import os\n");
-		sb.append("import sys\n\n");
-		sb.append("size_memory = 30000\n");
-		sb.append("memory = [0] * size_memory\n");
-		sb.append("i = 0\n");
-		return sb.toString();
+	String buildHeader() {
+		return "#!/usr/bin/env python\n"
+		+ "#coding: latin-1\n\n"
+		+ "import os\n"
+		+ "import sys\n\n"
+		+ "size_memory = 30000\n"
+		+ "memory = [0] * size_memory\n"
+		+ "i = 0\n";
 	}
 
 	@Override
 	String io(String in, String out) {
-		sb = new StringBuilder();
+		String s = "";
 		if ("System.in".equals(in)) {
-			sb.append("finput = sys.stdin\n");
+			s += "finput = sys.stdin\n";
+		} else {
+			s += "finput = open(\"" + in +"\", \"rb\")\n";
+		} if ("System.out".equals(out)) {
+			s += "foutput = sys.stdout\n";
+		} else {
+			s += "foutput = open(\"" + out + "\", \"wb\")\n";
 		}
-		else {
-			sb.append("finput = open(\"").append(in).append("\", \"rb\")\n");
-		}
-		if ("System.out".equals(out)) {
-			sb.append("foutput = sys.stdout\n");
-		}
-		else {
-			sb.append("foutput = open(\"").append(out).append("\", \"wb\")\n");
-		}
-		return sb.toString();
+		return s;
 	}
 
 	@Override
 	String buildFooter() {
-		sb = new StringBuilder();
-		sb.append("\nfor j in range(0, size_memory):\n");
-		sb.append("    if memory[j] != 0:\n");
-		sb.append("        string = \"\\nC\"+str(j)+\": \"+str(memory[j])\n");
-		sb.append("        foutput.write(string)\n");
-		sb.append("foutput.write(\"\\n\")");
-
-		return sb.toString();
+		return "\nfor j in range(0, size_memory):\n"
+		+ "    if memory[j] != 0:\n"
+		+ "        string = \"\\nC\"+str(j)+\": \"+str(memory[j])\n"
+		+ "        foutput.write(string)\n"
+		+ "foutput.write(\"\\n\")";
 	}
 }

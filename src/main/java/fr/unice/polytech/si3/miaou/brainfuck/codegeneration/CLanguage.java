@@ -1,6 +1,6 @@
 package fr.unice.polytech.si3.miaou.brainfuck.codegeneration;
 
-import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
+import fr.unice.polytech.si3.miaou.brainfuck.instructions.*;
 
 /**
  * Translates a brainfuck program in C.
@@ -8,73 +8,67 @@ import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
  * @author Guillaume Casagrande
  */
 class CLanguage extends Language {
+	public static final String NAME = "c";
+	public static final String EXTENSION = "c";
+
 	/**
 	 * Constructs a CLanguage object and fills the map of instructions.
 	 */
 	CLanguage() {
-		super();
-		extension = "c";
-		name = "c";
+		super(NAME, EXTENSION);
 
-		instructionsTranslation.put(']', "}");
-		instructionsTranslation.put('-', "(*memory)--;");
-		instructionsTranslation.put(',', "(*memory) = fgetc(finput);");
-		instructionsTranslation.put('+', "(*memory)++;");
-		instructionsTranslation.put('[', "while (*memory) {");
-		instructionsTranslation.put('<', "memory--;");
-		instructionsTranslation.put('.', "fputc(*memory, foutput);");
-		instructionsTranslation.put('>', "memory++;");
+		addTranslation(Back.class, "}");
+		addTranslation(Decr.class, "(*memory)--;");
+		addTranslation(In.class, "(*memory) = fgetc(finput);");
+		addTranslation(Incr.class, "(*memory)++;");
+		addTranslation(Jump.class, "while (*memory) {");
+		addTranslation(Left.class, "memory--;");
+		addTranslation(Out.class, "fputc(*memory, foutput);");
+		addTranslation(Right.class, "memory++;");
 	}
 
 	@Override
 	String translateInstruction(Instruction instr) {
-		return "    "+instructionsTranslation.get(instr.getSymbol());
+		return "    " + getTranslation(instr.getClass());
 	}
 
 	@Override
-	String buildFront() {
-		sb = new StringBuilder();
-		sb.append("#include <stdio.h>\n");
-		sb.append("#include <stdlib.h>\n");
-		sb.append("#include <string.h>\n\n");
+	String buildHeader() {
+		return "#include <stdio.h>\n"
+		+ "#include <stdlib.h>\n"
+		+ "#include <string.h>\n\n"
 
-		sb.append("#define SIZE_MEMORY 30000\n\n");
+		+ "#define SIZE_MEMORY 30000\n\n"
 
-		sb.append("int main() {\n");
-		sb.append("    char *memory = calloc(SIZE_MEMORY, sizeof(char));\n");
-		sb.append("    char *p = memory;\n");
-
-		return sb.toString();
+		+ "int main() {\n"
+		+ "    char *memory = calloc(SIZE_MEMORY, sizeof(char));\n"
+		+ "    char *p = memory;\n";
 	}
 
 	@Override
 	String io(String in, String out) {
-		sb = new StringBuilder();
-		sb.append("    FILE *finput;\n");
-		sb.append("    FILE *foutput;\n");
+		String s = ""
+		+ "    FILE *finput;\n"
+		+ "    FILE *foutput;\n";
+
 		if ("System.in".equals(in)) {
-			sb.append("    finput = stdin;\n");
+			s += "    finput = stdin;\n";
+		} else {
+			s += "    finput = fopen(\"" + in + "\", \"r\");\n";
+		} if ("System.out".equals(out)) {
+			s += "    foutput = stdout;\n";
+		} else {
+			s += "    foutput = fopen(\"" + out + "\", \"w\");\n";
 		}
-		else {
-            sb.append("    finput = fopen(\"").append(in).append("\", \"r\");\n");
-		}
-		if ("System.out".equals(out)) {
-			sb.append("    foutput = stdout;\n");
-		}
-		else {
-            sb.append("    foutput = fopen(\"").append(out).append("\", \"w\");\n");
-		}
-		return sb.toString();
+		return s;
 	}
 
 	@Override
 	String buildFooter() {
-		sb = new StringBuilder();
-		sb.append("\n    for (int i = 0; i < SIZE_MEMORY; i++, *p++) {\n");
-		sb.append("        if (*p) { fprintf(foutput, \"\\nC%d: %d\", i, *p); }\n    }\n");
-		sb.append("    fprintf(foutput, \"\\n\");\n");
-		sb.append("    return 0;\n}");
-
-		return sb.toString();
+		return "\n"
+		+ "    for (int i = 0; i < SIZE_MEMORY; i++, *p++) {\n"
+		+ "        if (*p) { fprintf(foutput, \"\\nC%d: %d\", i, *p); }\n    }\n"
+		+ "    fprintf(foutput, \"\\n\");\n"
+		+ "    return 0;\n}";
 	}
 }

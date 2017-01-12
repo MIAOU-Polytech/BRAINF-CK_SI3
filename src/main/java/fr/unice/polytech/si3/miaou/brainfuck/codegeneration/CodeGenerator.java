@@ -67,7 +67,7 @@ public class CodeGenerator {
 	 * Writes the front of the file.
 	 */
 	private void front() throws IOException {
-		wtf.write(lang.buildFront());
+		wtf.write(lang.buildHeader());
 	}
 
 	/**

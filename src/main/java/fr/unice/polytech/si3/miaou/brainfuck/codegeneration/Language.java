@@ -14,28 +14,25 @@ abstract class Language {
 	/**
 	 * Lists the equivalent code of each instruction.
 	 */
-	protected Map<Character, String> instructionsTranslation;
+	private Map<Class<? extends Instruction>, String> instructionsTranslation;
 
 	/**
 	 * Reprensents the extension of the file according to the language.
 	 */
-	protected String extension;
+	private String extension;
 
 	/**
 	 * The name of the language.
 	 */
-	protected String name;
-
-	/**
-	 * Used to create a string packaging several lines of code.
-	 */
-	protected StringBuilder sb;
+	private String name;
 
 	/**
 	 * Constructs a Language object and create the map of instructions.
 	 */
-	Language() {
+	Language(String name, String extension) {
 		instructionsTranslation = new HashMap<>();
+		this.name = name;
+		this.extension = extension;
 	}
 
 	/**
@@ -46,7 +43,7 @@ abstract class Language {
 	/**
 	 * Writes the front of the file.
 	 */
-	abstract String buildFront();
+	abstract String buildHeader();
 
 	/**
 	 * Writes the footer of the file.
@@ -57,6 +54,14 @@ abstract class Language {
 	 * Creates the io files.
 	 */
 	abstract String io(String in, String out);
+
+	void addTranslation(Class<? extends Instruction> instr, String code) {
+		instructionsTranslation.put(instr, code);
+	}
+
+	String getTranslation(Class<? extends Instruction> instr) {
+		return instructionsTranslation.get(instr);
+	}
 
 	/**
 	 * Returns the extension of the file.

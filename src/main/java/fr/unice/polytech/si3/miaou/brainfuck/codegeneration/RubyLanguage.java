@@ -1,6 +1,6 @@
 package fr.unice.polytech.si3.miaou.brainfuck.codegeneration;
 
-import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
+import fr.unice.polytech.si3.miaou.brainfuck.instructions.*;
 
 /**
  * Translates a brainfuck program in Ruby.
@@ -8,63 +8,60 @@ import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
  * @author Guillaume Casagrande
  */
 class RubyLanguage extends Language {
+	public static final String NAME = "ruby";
+	public static final String EXTENSION = "rb";
+
 	/**
 	 * Constructs a RubyLanguage object and fills the map of instructions.
 	 */
 	RubyLanguage() {
-		super();
-		extension = "rb";
-		name = "ruby";
+		super(NAME, EXTENSION);
 
-		instructionsTranslation.put(']', "end");
-		instructionsTranslation.put('-', "memory[i] -= 1");
-		instructionsTranslation.put(',', "memory[i] = finput.getbyte()");
-		instructionsTranslation.put('+', "memory[i] += 1");
-		instructionsTranslation.put('[', "while memory[i] != 0");
-		instructionsTranslation.put('<', "i -= 1");
-		instructionsTranslation.put('.', "foutput.write(memory[i].chr)");
-		instructionsTranslation.put('>', "i += 1");
+		addTranslation(Back.class, "end");
+		addTranslation(Decr.class, "memory[i] -= 1");
+		addTranslation(In.class, "memory[i] = finput.getbyte()");
+		addTranslation(Incr.class, "memory[i] += 1");
+		addTranslation(Jump.class, "while memory[i] != 0");
+		addTranslation(Left.class, "i -= 1");
+		addTranslation(Out.class, "foutput.write(memory[i].chr)");
+		addTranslation(Right.class, "i += 1");
 	}
 
 	@Override
 	String translateInstruction(Instruction instr) {
-		return instructionsTranslation.get(instr.getSymbol());
+		return getTranslation(instr.getClass());
 	}
 
 	@Override
-	String buildFront() {
-		sb = new StringBuilder();
-		sb.append("#!/usr/bin/env ruby\n\n");
-		sb.append("memory = Array.new(30000, 0)\n");
-		sb.append("i = 0\n");
-		return sb.toString();
+	String buildHeader() {
+		return "#!/usr/bin/env ruby\n\n"
+		+ "memory = Array.new(30000, 0)\n"
+		+ "i = 0\n";
 	}
 
 	@Override
 	String io(String in, String out) {
-		sb = new StringBuilder();
+		String s = "";
 		if ("System.in".equals(in)) {
-			sb.append("finput = $stdin\n");
+			s += "finput = $stdin\n";
 		} else {
-			sb.append("finput = File.open(\"").append(in).append("\", 'rb')\n");
+			s += "finput = File.open(\"" + in + "\", 'rb')\n";
 		}
 		if ("System.out".equals(out)) {
-			sb.append("foutput = $stdout\n");
+			s += "foutput = $stdout\n";
 		} else {
-			sb.append("foutput = File.open(\"").append(out).append("\", 'wb')\n");
+			s += "foutput = File.open(\"" + out + "\", 'wb')\n";
 		}
-		return sb.toString();
+		return s;
 	}
 
 	@Override
 	String buildFooter() {
-		sb = new StringBuilder();
-		sb.append("\nfor i in (0...30000)\n");
-		sb.append("    if memory[i] != 0 then\n");
-		sb.append("        string = \"\\nC\"+i.to_s+\": \"+memory[i].ord.to_s\n");
-		sb.append("        foutput.write(string)\n");
-		sb.append("    end\n");
-		sb.append("end\nfoutput.write(\"\\n\")");
-		return sb.toString();
+		return "\nfor i in (0...30000)\n"
+		+ "    if memory[i] != 0 then\n"
+		+ "        string = \"\\nC\"+i.to_s+\": \"+memory[i].ord.to_s\n"
+		+ "        foutput.write(string)\n"
+		+ "    end\n"
+		+ "end\nfoutput.write(\"\\n\")";
 	}
 }
