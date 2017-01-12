@@ -1,9 +1,11 @@
 package fr.unice.polytech.si3.miaou.brainfuck.codegeneration;
 
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
+import fr.unice.polytech.si3.miaou.brainfuck.Procedure;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Collection;
 
 /**
  * Defines the behaviour of the languages.
@@ -44,6 +46,8 @@ abstract class Language {
 	 * Writes the front of the file.
 	 */
 	abstract String buildHeader();
+
+	abstract String buildProcedureDeclaration(String procname);
 
 	/**
 	 * Writes the footer of the file.

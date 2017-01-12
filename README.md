@@ -20,6 +20,7 @@ The following parameters are supported:
     	--rewrite     write the shortened representation of the input program on the standard output
     	--translate   translate a textual representation of a program into an image-based one on the standard output
     	--trace       write a log file named <program file>.log
+    	--generate    generate code in another language
+    	--nometrics   disable final metrics report
    		-i            input file for In instructions
    		-o            output file for Out instructions
-

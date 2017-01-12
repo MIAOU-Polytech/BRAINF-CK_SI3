@@ -3,10 +3,14 @@ package fr.unice.polytech.si3.miaou.brainfuck.codegeneration;
 import java.io.IOException;
 import java.util.List;
 import java.io.File;
+import java.util.Collection;
 
 import fr.unice.polytech.si3.miaou.brainfuck.io.WriteTextFile;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
+import fr.unice.polytech.si3.miaou.brainfuck.instructions.Return;
+import fr.unice.polytech.si3.miaou.brainfuck.Procedure;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.LanguageException;
+import fr.unice.polytech.si3.miaou.brainfuck.parser.InstructionParser;
 
 /**
  * Builds a file that is the translation of the brainfuck program in another language.
@@ -30,6 +34,8 @@ public class CodeGenerator {
 	private String input;
 	private String output;
 
+	private int entryPoint;
+
 	/**
 	 * Main constructor of the <code>CodeGenerator</code> class.
 	 *
@@ -37,20 +43,27 @@ public class CodeGenerator {
 	 * @param language the name of the language destination.
 	 * @throws IOException	if it's impossible to create the log file.
 	 */
-	public CodeGenerator(String filename, String language, String in, String out) throws IOException {
+	public CodeGenerator(String filename, String language, String in, String out, InstructionParser ip) throws IOException {
 		LanguageSet ls = new LanguageSet();
 		lang = ls.getLanguage(language);
 
 		input = (in == null) ? "System.in" : in;
 		output = (out == null) ? "System.out" : out;
 
+		entryPoint = ip.getMainPosition();
+
 		filename = filename.substring(0, filename.lastIndexOf("."))+"."+lang.getExtension();
 		File f = new File(filename);
 		if (f.exists()) { f.delete(); }
 
 		wtf = new WriteTextFile(filename);
+
 		front();
+		writeProcedures(ip.getProcedures(), ip.get());
 		io();
+		writeInstructions(ip.get());
+		footer();
+
 		setExecutable(filename);
 	}
 
@@ -58,9 +71,23 @@ public class CodeGenerator {
 	 * Writes the equivalent of a call of an instruction in C.
 	 */
 	public void writeInstructions(List<Instruction> instructions) {
-		for (Instruction instr : instructions) {
-			wtf.write(lang.translateInstruction(instr));
+		for (int i = entryPoint; i < instructions.size(); i++) {
+			wtf.write(lang.translateInstruction(instructions.get(i)));
 		}
+	}
+
+	private void writeProcedure(Procedure proc, List<Instruction> instructions) {
+		wtf.write(lang.buildProcedureDeclaration(proc.getName()));
+		for (int i = proc.getPosition(); i < instructions.size(); i++) {
+			wtf.write(lang.translateInstruction(instructions.get(i)));
+			if (instructions.get(i) instanceof Return)
+				break;
+		}
+	}
+
+	private void writeProcedures(Collection<Procedure> procs, List<Instruction> instructions) {
+		for (Procedure proc : procs)
+			writeProcedure(proc, instructions);
 	}
 
 	/**

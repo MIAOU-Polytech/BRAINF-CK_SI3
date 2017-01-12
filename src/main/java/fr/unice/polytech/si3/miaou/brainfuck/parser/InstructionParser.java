@@ -2,10 +2,12 @@ package fr.unice.polytech.si3.miaou.brainfuck.parser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collection;
 import java.util.stream.Stream;
 import java.util.stream.IntStream;
 
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
+import fr.unice.polytech.si3.miaou.brainfuck.Procedure;
 import fr.unice.polytech.si3.miaou.brainfuck.InstructionSet;
 import fr.unice.polytech.si3.miaou.brainfuck.JumpTable;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.InvalidInstructionException;
@@ -114,5 +116,9 @@ public class InstructionParser {
 	 */
 	public int getMainPosition() {
 		return mainPosition;
+	}
+
+	public Collection<Procedure> getProcedures() {
+		return iset.getProcedures();
 	}
 }

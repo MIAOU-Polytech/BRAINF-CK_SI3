@@ -1,6 +1,7 @@
 package fr.unice.polytech.si3.miaou.brainfuck;
 
 import java.util.HashMap;
+import java.util.Collection;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.*;
 
 /**
@@ -76,6 +77,10 @@ public class InstructionSet {
 	 */
 	public Procedure getProc(String name) {
 		return procedures.get(name);
+	}
+
+	public Collection<Procedure> getProcedures() {
+		return procedures.values();
 	}
 
 	/**

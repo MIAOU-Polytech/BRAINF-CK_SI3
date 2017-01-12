@@ -93,9 +93,7 @@ public class Main {
 		}
 
 		if (argp.isIn(Mode.GENERATE)) {
-			CodeGenerator cg = new CodeGenerator(argp.getFilename(), argp.getLanguage(), argp.getInput(), argp.getOutput());
-			cg.writeInstructions(textFileRead(argp.getFilename()).get());
-			cg.footer();
+			CodeGenerator cg = new CodeGenerator(argp.getFilename(), argp.getLanguage(), argp.getInput(), argp.getOutput(), textFileRead(argp.getFilename()));
 		}
 	}
 

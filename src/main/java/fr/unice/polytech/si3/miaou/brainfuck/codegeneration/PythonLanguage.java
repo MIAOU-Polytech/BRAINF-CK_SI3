@@ -1,6 +1,9 @@
 package fr.unice.polytech.si3.miaou.brainfuck.codegeneration;
 
+import java.util.Collection;
+
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.*;
+import fr.unice.polytech.si3.miaou.brainfuck.Procedure;
 
 /**
  * Translates a brainfuck program in Python.
@@ -31,6 +34,14 @@ class PythonLanguage extends Language {
 		addTranslation(Left.class, "i -= 1");
 		addTranslation(Out.class, "foutput.write(chr(memory[i]))");
 		addTranslation(Right.class, "i += 1");
+		addTranslation(Return.class, "");
+		addTranslation(ProcedureCall.class, "()");
+	}
+
+	@Override
+	String buildProcedureDeclaration(String procname) {
+		spaces++;
+		return "def " + procname + "():";
 	}
 
 	@Override
@@ -40,7 +51,10 @@ class PythonLanguage extends Language {
 			s += "    ";
 		}
 		if (Jump.class == instr.getClass()) { spaces++; }
-		else if (Back.class == instr.getClass()) { spaces--; }
+		else if (Back.class == instr.getClass() || instr instanceof Return) { spaces--; }
+
+		if (instr instanceof ProcedureCall)
+			s += ((ProcedureCall) instr).getProcedureName();
 
 		s += getTranslation(instr.getClass());
 		return s;

@@ -1,6 +1,9 @@
 package fr.unice.polytech.si3.miaou.brainfuck.codegeneration;
 
+import java.util.Collection;
+
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.*;
+import fr.unice.polytech.si3.miaou.brainfuck.Procedure;
 
 /**
  * Translates a brainfuck program in C.
@@ -25,11 +28,22 @@ class CLanguage extends Language {
 		addTranslation(Left.class, "memory--;");
 		addTranslation(Out.class, "fputc(*memory, foutput);");
 		addTranslation(Right.class, "memory++;");
+		addTranslation(Return.class, "return;\n}");
+		addTranslation(ProcedureCall.class, "();");
+	}
+
+	@Override
+	String buildProcedureDeclaration(String procname) {
+		return "    void " + procname + "() {";
 	}
 
 	@Override
 	String translateInstruction(Instruction instr) {
-		return "    " + getTranslation(instr.getClass());
+		String s = "    ";
+		if (instr instanceof ProcedureCall)
+			s += ((ProcedureCall) instr).getProcedureName();
+		s += getTranslation(instr.getClass());
+		return s;
 	}
 
 	@Override
@@ -39,10 +53,11 @@ class CLanguage extends Language {
 		+ "#include <string.h>\n\n"
 
 		+ "#define SIZE_MEMORY 30000\n\n"
-
-		+ "int main() {\n"
-		+ "    char *memory = calloc(SIZE_MEMORY, sizeof(char));\n"
-		+ "    char *p = memory;\n";
+		+ "\n"
+		+ "static char p[SIZE_MEMORY] = {0};\n"
+		+ "static char *memory = p;\n"
+		+ "\n"
+		+ "int main() {\n";
 	}
 
 	@Override
@@ -66,8 +81,8 @@ class CLanguage extends Language {
 	@Override
 	String buildFooter() {
 		return "\n"
-		+ "    for (int i = 0; i < SIZE_MEMORY; i++, *p++) {\n"
-		+ "        if (*p) { fprintf(foutput, \"\\nC%d: %d\", i, *p); }\n    }\n"
+		+ "    for (int i = 0; i < SIZE_MEMORY; i++) {\n"
+		+ "        if (p[i]) { fprintf(foutput, \"\\nC%d: %d\", i, p[i]); }\n    }\n"
 		+ "    fprintf(foutput, \"\\n\");\n"
 		+ "    return 0;\n}";
 	}

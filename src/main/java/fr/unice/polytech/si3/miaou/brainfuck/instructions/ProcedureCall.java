@@ -58,4 +58,8 @@ public class ProcedureCall extends Instruction {
 		machine.saveReturnAddress();
 		machine.setInstrPointer(proc.getPosition()-1); //-1, because the instruction pointer is incremented right after the execution of the Procedure instruction.
 	}
+
+	public String getProcedureName() {
+		return proc.getName();
+	}
 }

@@ -1,6 +1,9 @@
 package fr.unice.polytech.si3.miaou.brainfuck.codegeneration;
 
+import java.util.Collection;
+
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.*;
+import fr.unice.polytech.si3.miaou.brainfuck.Procedure;
 
 /**
  * Translates a brainfuck program in Ruby.
@@ -18,25 +21,38 @@ class RubyLanguage extends Language {
 		super(NAME, EXTENSION);
 
 		addTranslation(Back.class, "end");
-		addTranslation(Decr.class, "memory[i] -= 1");
-		addTranslation(In.class, "memory[i] = finput.getbyte()");
-		addTranslation(Incr.class, "memory[i] += 1");
-		addTranslation(Jump.class, "while memory[i] != 0");
-		addTranslation(Left.class, "i -= 1");
-		addTranslation(Out.class, "foutput.write(memory[i].chr)");
-		addTranslation(Right.class, "i += 1");
+		addTranslation(Decr.class, "$memory[$i] -= 1");
+		addTranslation(In.class, "$memory[$i] = finput.getbyte()");
+		addTranslation(Incr.class, "$memory[$i] += 1");
+		addTranslation(Jump.class, "while $memory[$i] != 0");
+		addTranslation(Left.class, "$i -= 1");
+		addTranslation(Out.class, "foutput.write($memory[$i].chr)");
+		addTranslation(Right.class, "$i += 1");
+		addTranslation(Return.class, "end");
+		addTranslation(ProcedureCall.class, "()");
+	}
+
+	@Override
+	String buildProcedureDeclaration(String procname) {
+		return "def " + procname;
 	}
 
 	@Override
 	String translateInstruction(Instruction instr) {
-		return getTranslation(instr.getClass());
+		String s = "";
+
+		if (instr instanceof ProcedureCall)
+			s += ((ProcedureCall) instr).getProcedureName();
+
+		s += getTranslation(instr.getClass());
+		return s;
 	}
 
 	@Override
 	String buildHeader() {
 		return "#!/usr/bin/env ruby\n\n"
-		+ "memory = Array.new(30000, 0)\n"
-		+ "i = 0\n";
+		+ "$memory = Array.new(30000, 0)\n"
+		+ "$i = 0\n";
 	}
 
 	@Override
@@ -58,8 +74,8 @@ class RubyLanguage extends Language {
 	@Override
 	String buildFooter() {
 		return "\nfor i in (0...30000)\n"
-		+ "    if memory[i] != 0 then\n"
-		+ "        string = \"\\nC\"+i.to_s+\": \"+memory[i].ord.to_s\n"
+		+ "    if $memory[i] != 0 then\n"
+		+ "        string = \"\\nC\"+i.to_s+\": \"+$memory[i].ord.to_s\n"
 		+ "        foutput.write(string)\n"
 		+ "    end\n"
 		+ "end\nfoutput.write(\"\\n\")";
