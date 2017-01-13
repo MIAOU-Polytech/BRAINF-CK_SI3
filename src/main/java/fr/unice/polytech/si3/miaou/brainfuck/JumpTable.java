@@ -29,6 +29,8 @@ public class JumpTable {
 	 */
 	private Deque<Integer> intermediateStack;
 
+	private boolean valid = true;
+
 	/**
 	 * Constructs an interpreter using the given List of Instruction.
 	 */
@@ -41,7 +43,7 @@ public class JumpTable {
 	 * Performs the Jump/back instructions check
 	 */
 	public void check() {
-		if (!this.intermediateStack.isEmpty()) {
+		if (!valid || !this.intermediateStack.isEmpty()) {
 			throw new BracketMismatchException();
 		}
 	}
@@ -56,14 +58,15 @@ public class JumpTable {
 		if (i instanceof Jump) {
 			this.intermediateStack.push(new Integer(index));
 		} else if (i instanceof Back) {
-			try {
-				Integer jumpIndex = this.intermediateStack.pop();
-				Integer backIndex = index;
-				this.conditionnalJumpMap.put(jumpIndex, backIndex);
-				this.conditionnalJumpMap.put(backIndex, jumpIndex);
-			} catch(NoSuchElementException e) {
-				throw new BracketMismatchException();
+			if (intermediateStack.size() <= 0) {
+				this.valid = false;
+				return;
 			}
+
+			Integer jumpIndex = this.intermediateStack.pop();
+			Integer backIndex = index;
+			this.conditionnalJumpMap.put(jumpIndex, backIndex);
+			this.conditionnalJumpMap.put(backIndex, jumpIndex);
 		}
 	}
 

@@ -43,7 +43,7 @@ public class Machine {
 	/**
 	 * Stack of memory addresses to return to.
 	 */
-	private Stack<Integer> memoryBackStack;
+	private Deque<Integer> memoryBackStack;
 
 	/**
 	 * Current location in memory.
@@ -67,7 +67,7 @@ public class Machine {
 		this.memory = new Memory();
 		this.jumptable = jumptable;
 		this.addressesStack = new ArrayDeque<>();
-		this.memoryBackStack = new Stack<>();
+		this.memoryBackStack = new ArrayDeque<>();
 		this.location = 0;
 		this.instrPointer = entryPoint;
 		this.metrics = new Metrics();

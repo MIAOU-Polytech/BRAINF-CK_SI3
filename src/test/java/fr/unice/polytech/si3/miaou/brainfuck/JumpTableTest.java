@@ -38,7 +38,7 @@ public class JumpTableTest {
 	}
 
 	@Test(expected=BracketMismatchException.class)
-	public void checkFailTest() {
+	public void checkJumpFailTest() {
 		jt.bind(new Jump(), 0);
 		jt.check();
 	}
@@ -53,14 +53,16 @@ public class JumpTableTest {
 	}
 
 	@Test(expected=BracketMismatchException.class)
-	public void bindFailTest() {
+	public void checkBackFailTest() {
 		jt.bind(new Back(), 0);
+		jt.check();
 	}
 
 	@Test(expected=BracketMismatchException.class)
 	public void dummyInstrBackTest() {
 		jt.bind(dummy, 0);
 		jt.bind(new Back(), 0);
+		jt.check();
 	}
 
 	@Test

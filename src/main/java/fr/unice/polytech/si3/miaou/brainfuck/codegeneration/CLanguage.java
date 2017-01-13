@@ -1,9 +1,6 @@
 package fr.unice.polytech.si3.miaou.brainfuck.codegeneration;
 
-import java.util.Collection;
-
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.*;
-import fr.unice.polytech.si3.miaou.brainfuck.Procedure;
 
 /**
  * Translates a brainfuck program in C.
@@ -70,7 +67,8 @@ class CLanguage extends Language {
 			s += "    finput = stdin;\n";
 		} else {
 			s += "    finput = fopen(\"" + in + "\", \"r\");\n";
-		} if ("System.out".equals(out)) {
+		}
+		if ("System.out".equals(out)) {
 			s += "    foutput = stdout;\n";
 		} else {
 			s += "    foutput = fopen(\"" + out + "\", \"w\");\n";

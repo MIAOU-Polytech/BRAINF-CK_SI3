@@ -50,10 +50,8 @@ public class Main {
 			Main app = new Main(ap);
 			app.run();
 		} catch (BrainfuckException e) {
-			if (!(e instanceof BracketMismatchException) || ap.isIn(Mode.RUN) || ap.isIn(Mode.CHECK)) {
-				System.err.println(e);
-				System.exit(e.getErrorCode());
-			}
+			System.err.println(e);
+			System.exit(e.getErrorCode());
 		}
 	}
 

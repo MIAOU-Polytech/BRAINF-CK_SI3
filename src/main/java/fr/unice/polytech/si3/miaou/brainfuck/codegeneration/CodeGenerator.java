@@ -52,11 +52,8 @@ public class CodeGenerator {
 
 		entryPoint = ip.getMainPosition();
 
-		filename = filename.substring(0, filename.lastIndexOf("."))+"."+lang.getExtension();
-		File f = new File(filename);
-		if (f.exists()) { f.delete(); }
-
-		wtf = new WriteTextFile(filename);
+		wtf = new WriteTextFile(filename.substring(0, filename.lastIndexOf("."))+"."+lang.getExtension());
+		wtf.setAppend(false); // Overwrite file
 
 		front();
 		writeProcedures(ip.getProcedures(), ip.get());

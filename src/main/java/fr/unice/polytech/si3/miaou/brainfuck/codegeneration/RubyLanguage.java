@@ -1,9 +1,6 @@
 package fr.unice.polytech.si3.miaou.brainfuck.codegeneration;
 
-import java.util.Collection;
-
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.*;
-import fr.unice.polytech.si3.miaou.brainfuck.Procedure;
 
 /**
  * Translates a brainfuck program in Ruby.

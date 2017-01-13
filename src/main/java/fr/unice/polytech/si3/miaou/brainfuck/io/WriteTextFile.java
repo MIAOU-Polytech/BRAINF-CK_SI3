@@ -24,6 +24,8 @@ public class WriteTextFile {
 
 	private FileOutputStream fos;
 
+	private boolean append = true;
+
 	/**
 	 * Constructs a file reader with the given file path and check if the file exists.
 	 *
@@ -35,9 +37,18 @@ public class WriteTextFile {
 		renewFileOutputStream();
 	}
 
+	/**
+	 * Set append mode.
+	 *
+	 * @param append	false to disable append mode.
+	 */
+	public void setAppend(boolean append) {
+		this.append = append;
+	}
+
 	private void renewFileOutputStream() {
 		try {
-			this.fos = new FileOutputStream(this.file, true);
+			this.fos = new FileOutputStream(this.file, append);
 		} catch(FileNotFoundException e) {
 			throw new OutputFileNotFoundException(e);
 		}

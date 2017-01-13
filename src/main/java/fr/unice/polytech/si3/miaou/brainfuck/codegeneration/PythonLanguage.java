@@ -1,9 +1,6 @@
 package fr.unice.polytech.si3.miaou.brainfuck.codegeneration;
 
-import java.util.Collection;
-
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.*;
-import fr.unice.polytech.si3.miaou.brainfuck.Procedure;
 
 /**
  * Translates a brainfuck program in Python.
@@ -50,8 +47,10 @@ class PythonLanguage extends Language {
 		for (int i = spaces; i > 0; i--) {
 			s += "    ";
 		}
-		if (Jump.class == instr.getClass()) { spaces++; }
-		else if (Back.class == instr.getClass() || instr instanceof Return) { spaces--; }
+		if (Jump.class == instr.getClass())
+			spaces++;
+		else if (Back.class == instr.getClass() || instr instanceof Return)
+			spaces--;
 
 		if (instr instanceof ProcedureCall)
 			s += ((ProcedureCall) instr).getProcedureName();
@@ -78,7 +77,8 @@ class PythonLanguage extends Language {
 			s += "finput = sys.stdin\n";
 		} else {
 			s += "finput = open(\"" + in +"\", \"rb\")\n";
-		} if ("System.out".equals(out)) {
+		}
+		if ("System.out".equals(out)) {
 			s += "foutput = sys.stdout\n";
 		} else {
 			s += "foutput = open(\"" + out + "\", \"wb\")\n";
