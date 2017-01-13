@@ -33,6 +33,7 @@ public class WriteImageTest {
 	@Test
 	public void writeImageEmptyTest() throws IOException {
 		wi = new WriteImage(new ArrayList<>());
+		wi.write();
 
 		byte[] out = outStream.toByteArray();
 		ByteArrayInputStream bais = new ByteArrayInputStream(out);
@@ -49,6 +50,7 @@ public class WriteImageTest {
 		Integer[] colors = { 0xFFFFFFFF, 0xFF000000, 0xFF0000FF, 0xFF00FF00, 0xFFFF0000 };
 
 		wi = new WriteImage(Arrays.asList(colors));
+		wi.write();
 
 		byte[] out = outStream.toByteArray();
 		ByteArrayInputStream bais = new ByteArrayInputStream(out);

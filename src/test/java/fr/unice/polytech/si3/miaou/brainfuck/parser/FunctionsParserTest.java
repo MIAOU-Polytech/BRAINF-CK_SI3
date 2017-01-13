@@ -4,6 +4,7 @@ import fr.unice.polytech.si3.miaou.brainfuck.InstructionSet;
 import fr.unice.polytech.si3.miaou.brainfuck.JumpTable;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.ProcedureCall;
+import fr.unice.polytech.si3.miaou.brainfuck.instructions.Return;
 import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
 import org.junit.Test;
 import org.junit.Before;
@@ -122,5 +123,31 @@ public class FunctionsParserTest {
 	@Test(expected=SyntaxFunctionException.class)
 	public void noNameTest() {
 		parser.apply("FUNC");
+	}
+
+	@Test
+	public void parseReturnTest() {
+		String line = "RET 38";
+		Return ret = parser.parseReturn(line.split(" "));
+
+		Machine machine = new Machine(0, new JumpTable());
+		machine.saveReturnAddress();
+		machine.setLocation(38);
+		machine.writeMemory((byte) 2);
+		ret.accept(machine);
+		assertEquals(2, machine.readMemory());
+	}
+
+	@Test
+	public void parseCallNullTest() {
+		assertNull(parser.parseCall(new String[] {}));
+	}
+
+	@Test
+	public void parseReturnNullTest() {
+		assertNull(parser.parseReturn("".split(" ")));
+		assertNull(parser.parseReturn("a".split(" ")));
+		assertNull(parser.parseReturn("a a a".split(" ")));
+		assertNull(parser.parseReturn("INCR 39".split(" ")));
 	}
 }

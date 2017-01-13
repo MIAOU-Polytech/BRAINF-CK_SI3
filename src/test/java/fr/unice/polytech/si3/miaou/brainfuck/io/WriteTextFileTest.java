@@ -42,6 +42,27 @@ public class WriteTextFileTest {
 		assertEquals("miaou\n\nnyan\n", (new String(Files.readAllBytes(Paths.get(filename)))));
 	}
 
+	@Test
+	public void writeTextFileAppendTest() throws IOException {
+		String filename = testFolder.newFile().getPath();
+		wtf = new WriteTextFile(filename);
+		wtf.write("miaou");
+		wtf = new WriteTextFile(filename);
+		wtf.write("nyan");
+		assertEquals("miaou\nnyan\n", (new String(Files.readAllBytes(Paths.get(filename)))));
+	}
+
+	@Test
+	public void writeTextFileClearTest() throws IOException {
+		String filename = testFolder.newFile().getPath();
+		wtf = new WriteTextFile(filename);
+		wtf.write("miaou");
+		wtf = new WriteTextFile(filename);
+		wtf.clear();
+		wtf.write("nyan");
+		assertEquals("nyan\n", (new String(Files.readAllBytes(Paths.get(filename)))));
+	}
+
 	@Test(expected=OutputFileNotFoundException.class)
 	public void outputDirNotFoundTest() throws IOException {
 		String filename = testFolder.getRoot().getPath() + "/test/test";

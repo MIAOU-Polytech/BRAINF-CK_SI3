@@ -6,11 +6,9 @@ import java.nio.file.Paths;
 import java.nio.file.Files;
 
 import fr.unice.polytech.si3.miaou.brainfuck.parser.InstructionParser;
-import fr.unice.polytech.si3.miaou.brainfuck.exceptions.LanguageException;
 import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
 import fr.unice.polytech.si3.miaou.brainfuck.io.Io;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.BrainfuckException;
-import fr.unice.polytech.si3.miaou.brainfuck.exceptions.BracketMismatchException;
 import fr.unice.polytech.si3.miaou.brainfuck.io.WriteImage;
 import fr.unice.polytech.si3.miaou.brainfuck.io.ReadTextFile;
 import fr.unice.polytech.si3.miaou.brainfuck.io.ReadImageFile;
@@ -60,7 +58,7 @@ public class Main {
 	 *
 	 * @throws IOException	in case of IO error on file operation.
 	 */
-	private void run() throws LanguageException, IOException {
+	private void run() throws IOException {
 		InstructionParser ip;
 
 		if (argp.getType() == Type.IMAGE) {
@@ -85,13 +83,15 @@ public class Main {
 			if (argp.getType() == Type.TEXT) {
 				Translator tra = new Translator();
 				WriteImage iw = new WriteImage(tra.toColor(textFileRead(argp.getFilename()).get()));
+				iw.write();
 			} else {
 				Files.copy(Paths.get(argp.getFilename()), System.out); //Copy the image file to stdout
 			}
 		}
 
 		if (argp.isIn(Mode.GENERATE)) {
-			CodeGenerator cg = new CodeGenerator(argp.getFilename(), argp.getLanguage(), argp.getInput(), argp.getOutput(), textFileRead(argp.getFilename()));
+			CodeGenerator cg = new CodeGenerator(argp.getLanguage(), argp.getInput(), argp.getOutput(), textFileRead(argp.getFilename()));
+			cg.generate(argp.getFilename());
 		}
 	}
 
@@ -137,7 +137,7 @@ public class Main {
 	 * @throws FileNotFoundException	if creating/opening output file failed.
 	 * @throws IOException			if writing the log failed (when one has to be written).
 	 */
-	private void execute(InstructionParser ip) throws FileNotFoundException, IOException {
+	private void execute(InstructionParser ip) throws IOException {
 		Machine machine = new Machine(ip.getMainPosition(), ip.getJumpTable());
 		machine.setIo(new Io(argp.getInput(),argp.getOutput()));
 		Interpreter interpreter = new Interpreter(ip.get());

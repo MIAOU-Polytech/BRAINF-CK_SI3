@@ -9,7 +9,6 @@ import fr.unice.polytech.si3.miaou.brainfuck.io.WriteTextFile;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Return;
 import fr.unice.polytech.si3.miaou.brainfuck.Procedure;
-import fr.unice.polytech.si3.miaou.brainfuck.exceptions.LanguageException;
 import fr.unice.polytech.si3.miaou.brainfuck.parser.InstructionParser;
 
 /**
@@ -36,24 +35,36 @@ public class CodeGenerator {
 
 	private int entryPoint;
 
+	private InstructionParser ip;
+
 	/**
 	 * Main constructor of the <code>CodeGenerator</code> class.
 	 *
-	 * @param filename the name of the program file.
-	 * @param language the name of the language destination.
+	 * @param language	the name of the language destination.
+	 * @param in		input file to use, null for standard input.
+	 * @param out		output file to use, null for standard output.
+	 * @param in		InstructionParser from which to get declared procedures.
 	 * @throws IOException	if it's impossible to create the log file.
 	 */
-	public CodeGenerator(String filename, String language, String in, String out, InstructionParser ip) throws IOException {
+	public CodeGenerator(String language, String in, String out, InstructionParser ip) throws IOException {
 		LanguageSet ls = new LanguageSet();
 		lang = ls.getLanguage(language);
+		this.ip = ip;
 
 		input = (in == null) ? "System.in" : in;
 		output = (out == null) ? "System.out" : out;
 
 		entryPoint = ip.getMainPosition();
+	}
 
-		wtf = new WriteTextFile(filename.substring(0, filename.lastIndexOf("."))+"."+lang.getExtension());
-		wtf.setAppend(false); // Overwrite file
+	/**
+	 * Actually generate and write code to output file.
+	 *
+	 * @param filename	brainfuck program filename, will output to this filename with the extension for the selected language.
+	 */
+	public void generate(String filename) throws IOException {
+		wtf = new WriteTextFile(filename.substring(0, filename.lastIndexOf('.'))+"."+lang.getExtension());
+		wtf.clear(); // Empty file
 
 		front();
 		writeProcedures(ip.getProcedures(), ip.get());
@@ -66,6 +77,8 @@ public class CodeGenerator {
 
 	/**
 	 * Writes the equivalent of a call of an instruction in another language.
+	 *
+	 * @param instructions	list of instructions to generate code for.
 	 */
 	public void writeInstructions(List<Instruction> instructions) {
 		for (int i = entryPoint; i < instructions.size(); i++) {

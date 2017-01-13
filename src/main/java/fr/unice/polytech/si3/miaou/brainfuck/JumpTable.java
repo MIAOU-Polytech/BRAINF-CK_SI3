@@ -2,7 +2,6 @@ package fr.unice.polytech.si3.miaou.brainfuck;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.NoSuchElementException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,7 +57,7 @@ public class JumpTable {
 		if (i instanceof Jump) {
 			this.intermediateStack.push(new Integer(index));
 		} else if (i instanceof Back) {
-			if (intermediateStack.size() <= 0) {
+			if (intermediateStack.isEmpty()) {
 				this.valid = false;
 				return;
 			}

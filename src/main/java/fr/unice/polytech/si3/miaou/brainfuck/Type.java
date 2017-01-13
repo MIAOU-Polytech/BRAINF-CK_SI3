@@ -6,4 +6,4 @@ package fr.unice.polytech.si3.miaou.brainfuck;
  */
 public enum Type {
 	TEXT, IMAGE;
-};
+}

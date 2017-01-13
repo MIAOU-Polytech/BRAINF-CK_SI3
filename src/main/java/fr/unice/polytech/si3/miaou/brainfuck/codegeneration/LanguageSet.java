@@ -1,6 +1,7 @@
 package fr.unice.polytech.si3.miaou.brainfuck.codegeneration;
 
 import java.util.HashMap;
+import java.util.stream.Collectors;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.LanguageException;
 
 /**
@@ -12,7 +13,7 @@ class LanguageSet {
 	/**
 	 * Lists all Language objects (instantiated from their respective classes).
 	 */
-	private final static Language[] languages = {new CLanguage(), new PythonLanguage(), new RubyLanguage()};
+	private static final Language[] languages = {new CLanguage(), new PythonLanguage(), new RubyLanguage()};
 
 	/**
 	 * Maps between the language's name and the language object for easy fetching.
@@ -35,9 +36,9 @@ class LanguageSet {
 	 * @param name	Language's name.
 	 * @return	Corresponding Language object.
 	 */
-	Language getLanguage(String name) throws LanguageException{
+	Language getLanguage(String name) {
 		if (!names.containsKey(name)) {
-			throw new LanguageException("Incorrect name of language. Try \"c\", \"python\" or \"ruby\".");
+			throw new LanguageException("Incorrect name of language. Try one of: " + names.keySet().stream().collect(Collectors.joining(", ")));
 		}
 		return names.get(name);
 	}

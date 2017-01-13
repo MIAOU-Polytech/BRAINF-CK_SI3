@@ -70,4 +70,13 @@ public class InstructionSetTest {
 		assertEquals(proc, is.getProc("test"));
 		assertFalse(proc2 == is.getProc("test"));
 	}
+
+	@Test
+	public void getProceduresTest() {
+		Procedure proc = new Procedure("test", 0);
+		assertTrue(is.getProcedures().isEmpty());
+		is.addProc(proc);
+		assertEquals(1, is.getProcedures().size());
+		assertTrue(is.getProcedures().contains(proc));
+	}
 }

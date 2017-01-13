@@ -59,19 +59,17 @@ class CLanguage extends Language {
 
 	@Override
 	String io(String in, String out) {
-		String s = ""
-		+ "    FILE *finput;\n"
-		+ "    FILE *foutput;\n";
+		String s = "";
 
 		if ("System.in".equals(in)) {
-			s += "    finput = stdin;\n";
+			s += "    FILE *finput = stdin;\n";
 		} else {
-			s += "    finput = fopen(\"" + in + "\", \"r\");\n";
+			s += "    FILE *finput = fopen(\"" + in + "\", \"r\");\n";
 		}
 		if ("System.out".equals(out)) {
-			s += "    foutput = stdout;\n";
+			s += "    FILE *foutput = stdout;\n";
 		} else {
-			s += "    foutput = fopen(\"" + out + "\", \"w\");\n";
+			s += "    FILE *foutput = fopen(\"" + out + "\", \"w\");\n";
 		}
 		return s;
 	}

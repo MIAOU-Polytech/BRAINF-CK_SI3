@@ -6,9 +6,9 @@ package fr.unice.polytech.si3.miaou.brainfuck.exceptions;
  * @author Pierre-Emmanuel Novac
  */
 public class OutOfMemoryException extends BrainfuckException {
-	public OutOfMemoryException() {
+/*	public OutOfMemoryException() {
 		super();
-	}
+	}*/
 
 	/**
 	 * Constructs an OutOfMemoryException.

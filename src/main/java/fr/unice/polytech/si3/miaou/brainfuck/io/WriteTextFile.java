@@ -24,8 +24,6 @@ public class WriteTextFile {
 
 	private FileOutputStream fos;
 
-	private boolean append = true;
-
 	/**
 	 * Constructs a file reader with the given file path and check if the file exists.
 	 *
@@ -34,7 +32,7 @@ public class WriteTextFile {
 	 */
 	public WriteTextFile(String filename) throws IOException {
 		this.file = new File(filename);
-		renewFileOutputStream();
+		renewFileOutputStream(false);
 	}
 
 	/**
@@ -42,13 +40,13 @@ public class WriteTextFile {
 	 *
 	 * @param append	false to disable append mode.
 	 */
-	public void setAppend(boolean append) {
-		this.append = append;
+	public void clear() {
+		renewFileOutputStream(true);
 	}
 
-	private void renewFileOutputStream() {
+	private void renewFileOutputStream(boolean clear) {
 		try {
-			this.fos = new FileOutputStream(this.file, append);
+			this.fos = new FileOutputStream(this.file, !clear);
 		} catch(FileNotFoundException e) {
 			throw new OutputFileNotFoundException(e);
 		}
@@ -63,7 +61,7 @@ public class WriteTextFile {
 	public void write(String str) {
 		try {
 			if (!fos.getFD().valid())
-				renewFileOutputStream();
+				renewFileOutputStream(false);
 			fos.write(str.getBytes());
 			fos.write('\n');
 			fos.close();

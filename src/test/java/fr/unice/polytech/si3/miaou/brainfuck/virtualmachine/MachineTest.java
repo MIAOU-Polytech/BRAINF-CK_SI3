@@ -46,4 +46,20 @@ public class MachineTest {
 		machine.writeMemory((byte) -127);
 		assertEquals("C0: 1\n", machine.dumpMemory());
 	}
+
+	@Test
+	public void goBackMemoryTest() {
+		machine.setLocation(10);
+		machine.saveMemoryAddress();
+		machine.setLocation(2);
+		machine.goBackMemory();
+		assertEquals(10, machine.getLocation());
+	}
+
+	@Test
+	public void goBackMemoryEmptyStackTest() {
+		machine.setLocation(2);
+		machine.goBackMemory();
+		assertEquals(2, machine.getLocation());
+	}
 }

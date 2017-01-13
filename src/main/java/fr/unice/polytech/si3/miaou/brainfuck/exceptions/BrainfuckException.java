@@ -30,5 +30,5 @@ public abstract class BrainfuckException extends RuntimeException {
 	 *
 	 * @return error code to exit with.
 	 */
-	abstract public int getErrorCode();
+	public abstract int getErrorCode();
 }

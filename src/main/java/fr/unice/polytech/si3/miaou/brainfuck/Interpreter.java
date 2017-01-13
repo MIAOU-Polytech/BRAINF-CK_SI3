@@ -78,6 +78,7 @@ public class Interpreter {
 		machine.getMetric(ExecTime.class).stop();
 
 		System.out.print(machine.dumpMemory());
-		if (metricsReport) System.out.print(machine.dumpMetrics());
+		if (metricsReport)
+			System.out.print(machine.dumpMetrics());
 	}
 }

@@ -79,6 +79,11 @@ public class InstructionSet {
 		return procedures.get(name);
 	}
 
+	/**
+	 * Returns the collection of declared procedures.
+	 *
+	 * @return collection of declared procedures
+	 */
 	public Collection<Procedure> getProcedures() {
 		return procedures.values();
 	}

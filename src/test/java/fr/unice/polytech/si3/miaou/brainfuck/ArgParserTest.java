@@ -56,6 +56,12 @@ public class ArgParserTest {
 	}
 
 	@Test
+	public void nometricsTest() {
+		ap = new ArgParser(new String[] {"--nometrics"});
+		assertTrue(ap.isIn(Mode.NOMETRICS));
+	}
+
+	@Test
 	public void pImgTest() {
 		ap = new ArgParser(new String[] {"-p", "test.bmp"});
 		assertEquals(Type.IMAGE, ap.getType());
@@ -73,6 +79,12 @@ public class ArgParserTest {
 	public void oTest() {
 		ap = new ArgParser(new String[] {"-o", "test"});
 		assertEquals("test", ap.getOutput());
+	}
+
+	@Test
+	public void generateName() {
+		ap = new ArgParser(new String[] {"--generate", "test"});
+		assertEquals("test", ap.getLanguage());
 	}
 
 	@Test

@@ -75,6 +75,13 @@ public class InterpreterTest {
 	}
 
 	@Test
+	public void dumpMetricsDisabledTest() throws IOException {
+		inter.disableMetricsReport();
+		inter.run(machine);
+		assertTrue(outStream.toString().isEmpty());
+	}
+
+	@Test
 	public void runDummyInstr() throws IOException {
 		instrl.add(instr);
 		inter.run(machine);

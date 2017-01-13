@@ -63,7 +63,6 @@ public class WriteImage {
 		image = new BufferedImage(SIZE_SQUARE*nbCol, SIZE_SQUARE*nbCol, BufferedImage. TYPE_INT_RGB);
 		graph = image.createGraphics();
 		draw();
-		writeBmp();
 	}
 
 	/**
@@ -83,7 +82,7 @@ public class WriteImage {
 	 *
 	 * @throws IOException	if an IO error arised when writing the image.
 	 */
-	private void writeBmp() throws IOException {
+	public void write() throws IOException {
 		ImageIO.write(image, "bmp", System.out);
 	}
 }

@@ -4,21 +4,21 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class OutOfMemoryExceptionTest {
+public class LanguageExceptionTest {
 	BrainfuckException bfexception;
 
 	@Before
 	public void setUp() {
-		bfexception = new OutOfMemoryException(1, 1);
+		bfexception = new LanguageException("test");
 	}
 
 	@Test
 	public void getErrorCodeTest() {
-		assertEquals(2, bfexception.getErrorCode());
+		assertEquals(13, bfexception.getErrorCode());
 	}
 
 	@Test
 	public void getMessageTest() {
-		assertEquals("Cell number: 1, Total virtual memory size: 1", bfexception.getMessage());
+		assertEquals("test", bfexception.getMessage());
 	}
 }

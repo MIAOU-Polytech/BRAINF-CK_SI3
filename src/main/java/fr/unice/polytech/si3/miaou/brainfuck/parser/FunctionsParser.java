@@ -7,7 +7,6 @@ import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.ProcedureCall;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Return;
 
-import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -109,6 +108,8 @@ class FunctionsParser implements Function<String, Stream<String>> {
 
 	/**
 	 * Gets the current value of the counter.
+	 *
+	 * @return current value of counter.
 	 */
 	public int getCounter() {
 		return counter;
@@ -116,10 +117,11 @@ class FunctionsParser implements Function<String, Stream<String>> {
 
 	/**
 	 * Parsing a procedure call and returns the corresponding ProcedureCall object.
+	 *
 	 * @param split a split line containing the procedure call.
 	 * @return ProcedureCall object corresponding to the current procedure call.
 	 */
-	public ProcedureCall parseCall(String split[]) {
+	public ProcedureCall parseCall(String[] split) {
 		if (split.length < 1)
 			return null;
 		else {
@@ -134,7 +136,13 @@ class FunctionsParser implements Function<String, Stream<String>> {
 		}
 	}
 
-	public Return parseReturn(String split[]) {
+	/**
+	 * Parsing a return instruction and returns a new Return object with parsed parameter.
+	 *
+	 * @param split	a split line containing the return instruction.
+	 * @return Return object with parser parameter.
+	 */
+	public Return parseReturn(String[] split) {
 		if (split.length == 2) { // length == 1 means instruction should have been recognized earlier
 			Instruction instr = iset.getOp(split[0]);
 			if (instr instanceof Return)
