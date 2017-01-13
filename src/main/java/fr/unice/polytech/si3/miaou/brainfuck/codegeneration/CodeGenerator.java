@@ -63,7 +63,9 @@ public class CodeGenerator {
 	 * @param filename	brainfuck program filename, will output to this filename with the extension for the selected language.
 	 */
 	public void generate(String filename) throws IOException {
-		wtf = new WriteTextFile(filename.substring(0, filename.lastIndexOf('.'))+"."+lang.getExtension());
+		String outFilename = filename.substring(0, filename.lastIndexOf('.')) + "." + lang.getExtension();
+
+		wtf = new WriteTextFile(outFilename);
 		wtf.clear(); // Empty file
 
 		front();
@@ -72,7 +74,7 @@ public class CodeGenerator {
 		writeInstructions(ip.get());
 		footer();
 
-		setExecutable(filename);
+		setExecutable(outFilename);
 	}
 
 	/**

@@ -37,8 +37,6 @@ public class WriteTextFile {
 
 	/**
 	 * Set append mode.
-	 *
-	 * @param append	false to disable append mode.
 	 */
 	public void clear() {
 		renewFileOutputStream(true);
