@@ -23,3 +23,9 @@ bfck executable might return different error codes depending on the execution.
  * **9**: when the specified path for Output Stream (i.e with the -o option when launching bfck executable) is not accessible / does not exist.
 
  * **10**: when Macro definition structure is not used correctly (see the Macro Definition Documentation for more details).
+
+ * **11**: when Function definition structure is not used correctly.
+ 
+ * **12**: when Function usage is not working.
+ 
+ * **13**: when the language argument thrown through the bfck executable is not correct.
